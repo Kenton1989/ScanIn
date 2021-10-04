@@ -13,6 +13,36 @@ class DatabaseAccessor:
     def close(self):
         self._connection.close()
 
+    # account part
+    def registration(self, PID, name, hashedPwd, facialVector):
+        sql_register = "INSERT INTO " #TODO: how to set values?
+        pass
+    
+    def getUserInfo(self, PID):
+        cursor = self._connection.cursor()
+
+        sql_check = "SELECT * FROM person_info WHERE PID = %(PID)s"
+        val_check = {'PID' : PID}
+        result = cursor.execute(sql_check, val_check)
+        return result
+
+    def disableAccount(self, PID):
+        cursor = self._connection.cursor()
+        sql_update = "UPDATE person_info SET activated = False WHERE PID = %(PID)s"
+        val_update = {'PID' : PID}
+        cursor.execute(sql_update, val_update);
+        return True
+
+    def authentication(self, PID, inputHashedPassword):
+        cursor = self._connection.cursor()
+        sql_check = "SELECT hashed_password FROM person_info WHERE PID = %(PID)s"
+        val_check = {'PID' : PID}
+        hashed_password = cursor.execute(sql_check, val_check)
+        
+        return hashed_password == inputHashedPassword  
+    # account part end
+
+    # check in part
     def getAttendance(self, PID, SID):
         cursor = self._connection.cursor()
         sql = "SELECT * FROM attendance WHERE PID = %(PID)s AND SID = %(SID)s"
@@ -26,61 +56,23 @@ class DatabaseAccessor:
             + "(%(PID)s, %(SID)s, %(checkIn)s)"
         val = {'PID' : PID, 'SID' : SID, 'checkIn' : checkIn}
         result = cursor.execute(sql, val)
-        return result
+        return result  
+    # check in part end
 
-    def registration(self, PID, name, hashedPwd, facialVector):
-        
-
-        if (exist):
-            return False
-        else:
-            sql_register = "INSERT INTO " #TODO: how to set values?
-            return True
-    
-    def getUserInfo(self, PID):
-        cursor = self._connection.cursor()
-
-        sql_check = "SELECT * FROM person_info WHERE PID = %(PID)s"
-        val_check = {'PID' : PID}
-        result = cursor.execute(sql_check, val_check)
-        return result
-
-    def disableAccount(self, PID):
-        cursor = self._connection.cursor()
-
-        sql_check = "SELECT * FROM person_info WHERE PID = %(PID)s"
-        val_check = {'PID' : PID}
-        personal_info = cursor.execute(sql_check, val_check)
-
-        if (len(personal_info) == 0):
-            return False
-        if (personal_info['activated']):
-            sql_update = "UPDATE person_info SET activated = False WHERE PID = %(PID)s"
-            val_update = {'PID' : PID}
-            cursor.execute(sql_update, val_update);
-            return True
-
+    # session part
     def addAuthorizedPerson(self, PID, SID):
-        pass
+        cursor = self._connection.cursor()
+        sql = "INSERT INTO authorized_attendee(PID, SID) VALUES " ,\
+            + "(%(PID)s, %(SID)s)"
+        val = {'PID' : PID, 'SID' : SID}
+        result = cursor.execute(sql, val)
 
     def removeAuthorizedPerson(self, PID, SID):
-        pass
-
-    def authentication(self, PID, inputHashedPassword):
         cursor = self._connection.cursor()
-        sql_check = "SELECT hashed_password FROM person_info WHERE PID = %(PID)s"
-        val_check = {'PID' : PID}
-        hashed_password = cursor.execute(sql_check, val_check)
-        
-        return hashed_password == inputHashedPassword
-
-    def getCurrentSessions(self):
-        # self.getSessions(None, None, )
-        pass
-
-    def getSessions(self, PID, SID, startDate, endDate):
-        pass
-
+        sql = "DELETE FROM authorized_attendee(PID, SID) WHERE " ,\
+            + "PID = %(PID)s AND SID = %(SID)s"
+        val = {'PID' : PID, 'SID' : SID}
+        result = cursor.execute(sql, val)
 
     # return SID
     def addSession(self, startTime, endTime):
@@ -100,8 +92,22 @@ class DatabaseAccessor:
         return next_session
 
     def updateSessionTime(self, SID, newStartTime, newEndTime):
+        cursor = self._connection.cursor()
+        sql = "UPDATE session_info " ,\
+            + "SET start_time = %(sTime)s AND end_time = %(eTime)s" ,\
+            + "WHERE SID = %(SID)s"
+        val = {'sTime' : newStartTime, 'eTime' : newEndTime, 'SID' : SID}
+        result = cursor.execute(sql, val)
+    # session part end
+    
+    # history part
+    def getSessions(self, PID, SID, startDate, endDate):
         pass
 
+    def getCurrentSessions(self):
+        # self.getSessions(None, None, )
+        pass
+    # history part end
     
 
 
