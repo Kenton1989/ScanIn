@@ -60,10 +60,10 @@ class DatabaseAccessor:
             cursor.execute(sql_update, val_update);
             return True
 
-    def addAuthorizedPerson(self, PID, SID, linked):
+    def addAuthorizedPerson(self, PID, SID):
         pass
 
-    def removeAuthorizedPerson(self, PID, SID, linked):
+    def removeAuthorizedPerson(self, PID, SID):
         pass
 
     def authentication(self, PID, inputHashedPassword):
@@ -81,24 +81,25 @@ class DatabaseAccessor:
     def getSessions(self, PID, SID, startDate, endDate):
         pass
 
-    def addSessions(self, startDate, times, period,
-                    startTime, endTime, attendeeList):
+
+    # return SID
+    def addSession(self, startTime, endTime):
         pass
 
-    def deleteSessions(self, SID, linked):
+    def deleteSession(self, SID):
         cursor = self._connection.cursor()
-        sql_sel = "SELECT next_session FROM session_info WHERE SID = %(SID)s"
-        val_sel = {'SID' : SID}
-        next_session = cursor.execute(sql_sel, val_sel)
-
         sql_del = "DELETE FROM session_info WHERE SID = %(SID)s"
         val_del = {'SID' : SID}
         result = cursor.execute(sql_del, val_del)
 
-        if (linked and next_session):
-            self.deleteSessions(self, next_session, linked)
+    def getNextSession(self, SID):
+        cursor = self._connection.cursor()
+        sql_sel = "SELECT next_session FROM session_info WHERE SID = %(SID)s"
+        val_sel = {'SID' : SID}
+        next_session = cursor.execute(sql_sel, val_sel)
+        return next_session
 
-    def updateSessionTime(self, SID, newStartTime, newEndTime, linked):
+    def updateSessionTime(self, SID, newStartTime, newEndTime):
         pass
 
     
