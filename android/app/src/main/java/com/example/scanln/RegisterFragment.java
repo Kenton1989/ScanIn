@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class RegisterFragment extends Fragment {
 
+    private RegisterViewModel model;
     private FragmentRegisterBinding binding;
     public RegisterFragment(){
         super(R.layout.fragment_register);
@@ -37,6 +39,9 @@ public class RegisterFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model=new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        
         binding.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
              public void onClick(View view){
