@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime
 
 DEFAULT_MYSQL_PARAM = {
     'host': 'localhost',
@@ -33,13 +34,19 @@ class DatabaseAccessor:
         cursor.execute(sql_update, val_update);
         return True
 
-    def authentication(self, PID, inputHashedPassword):
+    def getHashedPwd(self, PID, inputHashedPassword):
         cursor = self._connection.cursor()
         sql_check = "SELECT hashed_password FROM person_info WHERE PID = %(PID)s"
         val_check = {'PID' : PID}
         hashed_password = cursor.execute(sql_check, val_check)
         
-        return hashed_password == inputHashedPassword  
+        return hashed_password
+
+    def getFacialVectors(self):
+        cursor = self._connection.cursor() #TODO: format needs change?
+        sql = "SELECT PID, facial_vector FROM person_info"
+        result = cursor.execute(sql)
+        return result
     # account part end
 
     # check in part
@@ -75,8 +82,16 @@ class DatabaseAccessor:
         result = cursor.execute(sql, val)
 
     # return SID
-    def addSession(self, startTime, endTime):
-        pass
+    def addSession(self, sessionName, creator, venue, startTime, endTime, nextSession):
+        cursor = self._connection.cursor()
+        sql = "INSERT INTO session_info(creator, session_name, venue, start_time, end_time, next_session)",\
+            + " VALUES(%s, %s, %s, %s, %s, %s)"
+        val = (sessionName, creator, venue, startTime, endTime, nextSession)
+        cursor.execute(sql, val)
+
+        sql_len = "SELECT COUNT(*) FROM session_info"
+        length = cursor.execute(sql_len)
+        return length
 
     def deleteSession(self, SID):
         cursor = self._connection.cursor()
@@ -98,15 +113,45 @@ class DatabaseAccessor:
             + "WHERE SID = %(SID)s"
         val = {'sTime' : newStartTime, 'eTime' : newEndTime, 'SID' : SID}
         result = cursor.execute(sql, val)
+    
+    def getAllPerson(self):
+        cursor = self._connection.cursor()
+        sql = "SELECT PID, name FROM person_info WHERE activated = true"
+        result = cursor.execute(sql)
+        return result
     # session part end
     
     # history part
-    def getSessions(self, PID, SID, startDate, endDate):
-        pass
+    def getAttendance(self, PID, SID, startDate, endDate):
+        cursor = self._connection.cursor()
+        sql = "SELECT * FROM attendance WHERE 1=1"
+        val = {}
+        
+        if (PID):
+            sql += " AND PID = %(PID)s"
+            val['PID'] = PID
+        if (SID):
+            sql += " AND SID = %(SID)s"
+            val['SID'] = SID
+        if (startDate):
+            sql += " AND check_time >= %(startDate)s"
+            val['startDate'] = startDate
+        if (endDate):
+            sql += "AND check_time >= %(endDate)s"
+            val['endDate'] = endDate
 
-    def getCurrentSessions(self):
-        # self.getSessions(None, None, )
-        pass
+        result = cursor.execute(sql, val)
+        return result
+
+    def getCurrentSessions(self, PID):
+        cursor = self._connection.cursor()
+
+        currentTime = datetime.now.__str__()
+        sql = "SELECT * FROM session_info NATURAL JOIN authorized_attendee",\
+            + "WHERE PID = %(PID)s AND start_time >= %(cTime)s AND end_time <= %(cTime)s"
+        val = {'PID' : PID, 'cTime' : currentTime} 
+        result = cursor.execute(sql, val)
+        return result
     # history part end
     
 
@@ -115,3 +160,4 @@ def columnGenerator():
     COLUMN_COUNT = 128
     for i in range(1, COLUMN_COUNT+1):  
         print("v" + str(i) + " DOUBLE PRECISION(64),")
+
