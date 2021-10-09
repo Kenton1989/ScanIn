@@ -30,10 +30,14 @@ class AccountManager(Manager):
         return True
 
     def authentication(self, PID, inputHashedPwd):
-        return self._dbAccessor.authentication(PID, inputHashedPwd)
-    
+        hashedPwd = self._dbAccessor.getHashedPwd(PID, inputHashedPwd)
+        return hashedPwd == inputHashedPwd
 
 class CheckInManager(Manager):
+
+    # return pid
+    def recognition(self, image):
+        pass
 
     def getCurrentAction(self, PID, SID):
         records = self._dbAccessor.getAttendance(PID, SID)
@@ -48,15 +52,24 @@ class CheckInManager(Manager):
 
 class SessionManager(Manager):
 
-    #TODO
-    def addSession(self, times, period:timedelta, sTime:datetime, eTime:datetime, attendeeList):
+    #TODO: done?
+    def addSession(self, times, period:timedelta, attendeeList,
+                sessionName, creator, venue, sTime:datetime, eTime:datetime):
+        
         sessionList = []
-        sessionList.append(self._dbAccessor.addSession())
-        for i in range(1, times):
-            sTime.__add__(period)
-            eTime.__add__(period)
-            self._dbAccessor.addSession()
-        pass
+        lastSession = None
+
+        sTime.__add__(period * times)
+        eTime.__add__(period * times)
+        for i in range(0, times):
+            sTime.__add__(-period)
+            eTime.__add__(-period)
+            lastSession = self._dbAccessor.addSession(sessionName, creator, venue, sTime, eTime, lastSession)
+            sessionList.append(lastSession)
+
+        for s in sessionList:
+            for p in attendeeList:
+                self._dbAccessor.addAuthorizedPerson(p, s)
 
     def deleteSession(self, SID, linked):
         next_session = self._dbAccessor.getNextSession(SID)
@@ -104,4 +117,7 @@ class HistoryManager(Manager):
 
     #TODO
     def getHistory(self, PID, SID, sDate, eDate):
+        return self._dbAccessor.getAttendance(PID, SID, sDate, eDate)
+        
+    def preloading(self):
         pass

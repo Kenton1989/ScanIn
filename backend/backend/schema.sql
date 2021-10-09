@@ -10,11 +10,11 @@ CREATE TABLE person_info (
 
 CREATE TABLE session_info (
     SID CHAR(32) NOT NULL AUTO_INCREMENT,
-    creater VARCHAR(64),
+    creator VARCHAR(64),
     session_name VARCHAR(512),
+    venue VARCHAR(512),
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
-    venue VARCHAR(512),
     next_session CHAR(32),
 
     CHECK (start_time < end_time),
