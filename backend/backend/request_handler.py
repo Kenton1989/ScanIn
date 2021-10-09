@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpRequest, JsonResponse
 import json
+from face_recognizer import FaceRecognizer
 
 def handle_cz3002(request: HttpRequest):
     body = request.body
