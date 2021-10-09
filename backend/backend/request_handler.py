@@ -1,12 +1,12 @@
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, JsonResponse
 import json
 
 def handle_cz3002(request: HttpRequest):
     body = request.body
     if len(body) < 2: body = '{"test":"3002"}'
     req = json.loads(body)
-    
-    return HttpResponse(bytes('It works (CZ3002) \n' + json.dumps(req), encoding='utf8'))
+    req["msg"] = "It works!"
+    return JsonResponse(req)
 
 
 def handle_home(request: HttpRequest):
