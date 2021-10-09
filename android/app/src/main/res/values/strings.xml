@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">ScanIn</string>
+    <string name="app_name">Scanln</string>
+    <string name="register_btn">Register</string>
+    <string name="check_in_btn">Check In</string>
+    <string name="admin_btn">Admin</string>
+    <string-array name="repeat_num_array">
+        <item>once</item>
+        <item>twice</item>
+        <item>3 times</item>
+        <item>4 times</item>
+        <item>5 times</item>
+    </string-array>
+    <string-array name="repeat_freq_array">
+        <item>day</item>
+        <item>week</item>
+        <item>month</item>
+        <item>year</item>
+    </string-array>
+
 </resources>
