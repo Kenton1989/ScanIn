@@ -3,8 +3,10 @@ from datetime import datetime
 
 DEFAULT_MYSQL_PARAM = {
     'host': 'localhost',
-    'user': 'username',
-    'password': 'password',
+    'port': 3306,
+    'user': 'cz3002',
+    'password': 'cz3002@MySql',
+    'database': 'cz3002',
 }
 
 class DatabaseAccessor:
