@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Scanln</string>
+    <string name="app_name">ScanIn</string>
     <string name="register_btn">Register</string>
     <string name="check_in_btn">Check In</string>
     <string name="admin_btn">Admin</string>
