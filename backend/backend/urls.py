@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from backend.request_handler import handle_cz3002, handle_home
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', handle_home, name='home'),
+    path('admin/', admin.site.urls, name='admin'),
+    path('cz3002/', handle_cz3002, name='cz3002'),
 ]
