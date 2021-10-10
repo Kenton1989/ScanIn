@@ -5,6 +5,7 @@ import logging
 
 log = logging.getLogger('Request Handler')
 
+
 def _success_response(returnVal):
     assert isinstance(returnVal, dict)
     res = {
@@ -15,7 +16,8 @@ def _success_response(returnVal):
     response = JsonResponse(res)
     return response
 
-def _failed_response(errMsg):
+
+def _failed_response(errMsg='invalid request.'):
     assert isinstance(errMsg, str)
     res = {
         'success': False,
@@ -25,21 +27,24 @@ def _failed_response(errMsg):
     response = JsonResponse(res)
     return response
 
+
 def _default_handler(auth, param):
     return _failed_response('Unknown operation.')
 
 
 OP_HANDLER = {}
 
+
 def handle_cz3002(request: HttpRequest):
     if request.method != 'POST':
         log.debug('Only POST method is used')
+        return _failed_response()
 
     try:
         req = json.loads(request.body)
     except json.decoder.JSONDecodeError:
         log.error('Cannot parse the request into JSON object.')
-        return _failed_response('Invalid request.')
+        return _failed_response()
 
     operation = req['operation']
     auth = req['auth']
