@@ -39,6 +39,7 @@ def handle_cz3002(request: HttpRequest):
         req = json.loads(request.body)
     except json.decoder.JSONDecodeError:
         log.error('Cannot parse the request into JSON object.')
+        return _failed_response('Invalid request.')
 
     operation = req['operation']
     auth = req['auth']
