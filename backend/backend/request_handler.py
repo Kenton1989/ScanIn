@@ -42,7 +42,7 @@ def _valid_auth_format(auth):
         return False
     if not isinstance(auth['username'], str):
         return False
-    if not isinstance(auth['password'], str):
+    if not isinstance(auth['hashed_password'], str):
         return False
     return True
 
