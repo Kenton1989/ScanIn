@@ -137,6 +137,8 @@ public class LoginFragment extends Fragment {
         // TODO : initiate successful logged in experience
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_SHORT).show();
+            NavHostFragment.findNavController(LoginFragment.this)
+                    .navigate(R.id.action_loginFragment_to_adminMenu);
         }
     }
 

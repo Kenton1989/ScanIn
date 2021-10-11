@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_register_Fragment"
             app:destination="@id/register_Fragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminMenu"
+            app:destination="@id/adminMenu" />
     </fragment>
     <fragment
         android:id="@+id/register_Fragment"
@@ -31,4 +34,9 @@
         android:name="com.example.scanin.ui.register.ImageResgistration"
         android:label="image_resgistration_fragment"
         tools:layout="@layout/image_resgistration_fragment" />
+    <fragment
+        android:id="@+id/adminMenu"
+        android:name="com.example.scanin.ui.admin.AdminMenu"
+        android:label="fragment_admin_menu"
+        tools:layout="@layout/fragment_admin_menu" />
 </navigation>
