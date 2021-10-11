@@ -10,7 +10,7 @@ class Manager:
 class AccountManager(Manager):
 
     def __init__(self, dbAccessor, faceRcognizer) -> Manager:
-        super.__init__(self, dbAccessor)
+        super.__init__(dbAccessor)
         self._recognizer = faceRcognizer
 
     def registerAccount(self, PID, name, hashed_pwd, image):
@@ -43,6 +43,9 @@ class AccountManager(Manager):
 
 class CheckInManager(Manager):
 
+    def __init__(self, dbAccessor):
+        super().__init__(dbAccessor)
+
     # return pid
     def recognition(self, image):
         pass
@@ -60,10 +63,12 @@ class CheckInManager(Manager):
 
 
 class SessionManager(Manager):
+    def __init__(self, dbAccessor):
+        super().__init__(dbAccessor)
 
-    # TODO: done?
     def addSession(self, times, period: timedelta, attendeeList,
                    sessionName, creator, venue, sTime: datetime, eTime: datetime):
+        # TODO: done?
 
         sessionList = []
         lastSession = None
@@ -124,6 +129,8 @@ class SessionManager(Manager):
 
 
 class HistoryManager(Manager):
+    def __init__(self, dbAccessor):
+        super().__init__(dbAccessor)
 
     # TODO
     def getHistory(self, PID, SID, sDate, eDate):
