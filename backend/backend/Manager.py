@@ -1,3 +1,4 @@
+from typing import List
 from DatabaseAccessor import DatabaseAccessor
 from datetime import datetime, timedelta
 
@@ -15,13 +16,17 @@ class AccountManager(Manager):
         super().__init__(dbAccessor)
         self._recognizer = faceRecognizer
 
-    def registerAccount(self, PID, name, hashed_pwd, image):
+    #TODO: format of image
+    def registerAccount(self, PID, name, hashed_pwd, imageList:List):
         exist = self._dbAccessor.getUserInfo(PID)
         if (exist):
             return False
         
-        facial_vector = self._recognizer.register_face(image)
-        self._dbAccessor.registration(PID, name, hashed_pwd, facial_vector)
+        for image in imageList:
+            facial_vector = self._recognizer.register_face(image)
+            self._dbAccessor.addFacialVector(PID, facial_vector)
+
+        self._dbAccessor.registration(PID, name, hashed_pwd)
         return True 
 
     def disableAccount(self, PID):
@@ -72,7 +77,6 @@ class SessionManager(Manager):
     def __init__(self, dbAccessor):
         super().__init__(dbAccessor)
 
-    #TODO: done?
     def addSession(self, times, period:timedelta, attendeeList,
                 sessionName, creator, venue, sTime:datetime, eTime:datetime):
         
@@ -82,11 +86,11 @@ class SessionManager(Manager):
         sessionList = []
         lastSession = None
 
-        sTime.__add__(period * times)
-        eTime.__add__(period * times)
+        sTime += period * times
+        eTime += period * times
         for i in range(0, times):
-            sTime.__add__(-period)
-            eTime.__add__(-period)
+            sTime -= period
+            eTime -= period
             lastSession = self._dbAccessor.addSession(
                 sessionName, creator, venue, sTime, eTime, lastSession)
             sessionList.append(lastSession)
@@ -142,7 +146,7 @@ class HistoryManager(Manager):
     def __init__(self, dbAccessor):
         super().__init__(dbAccessor)
 
-    #TODO
+    #TODO: max number of rows not restricted
     def getHistory(self, PID, SID, sDate, eDate):
         return self._dbAccessor.getAttendance(PID, SID, sDate, eDate)
         
@@ -150,7 +154,7 @@ class HistoryManager(Manager):
         if (self._dbAccessor.isAdmin(PID)):
             return self._dbAccessor.getAllPerson()
         else: 
-            return (PID)
+            return self._dbAccessor.getSomePerson(PID)
             
     def preloadSID(self, PID):
         if (self._dbAccessor.isAdmin(PID)):

@@ -32,7 +32,7 @@ class DatabaseAccessor:
         param = {'PID': PID, 'name': name, 'passwd': plainPwd}
         cursor.execute(sql, param)
 
-        return cursor.rowcourt > 0
+        return cursor.rowcount > 0
 
     def getUserInfo(self, PID):
         cursor = self._connection.cursor()
@@ -108,6 +108,7 @@ class DatabaseAccessor:
         sql = "INSERT INTO attendance(PID, SID, checkIn) VALUES  (%(PID)s, %(SID)s, %(checkIn)s)"
         param = {'PID': PID, 'SID': SID, 'checkIn': checkIn}
         cursor.execute(sql, param)
+        
         return cursor.rowcount > 0
     # check in part end
 
@@ -162,16 +163,25 @@ class DatabaseAccessor:
         result = tuple(cursor)
         return result
 
+    def getSomePerson(self, PID):
+        cursor = self._connection.cursor()
+        sql = "SELECT PID, name FROM person_info WHERE activated = 1 AND PID = %s"
+        param = (PID)
+        cursor.execute(sql, param)
+        result = tuple(cursor)
+        return result
+
     def getAllSID(self):
         cursor = self._connection.cursor()
-        sql = "SELECT SID, session_name FROM session_info"
+        sql = "SELECT SID, session_name, start_time, end_time FROM session_info"
         cursor.execute(sql)
         result = tuple(cursor)
         return result
 
     def getSomeSID(self, PID):
         cursor = self._connection.cursor()
-        sql = "SELECT SID, session_name FROM session_info NATURAL JOIN authorized_attendee" ,\
+        sql = "SELECT SID, session_name, start_time, end_time ",\
+            + "FROM session_info NATURAL JOIN authorized_attendee " ,\
             + "WHERE authorized_attendee.PID = %s"
         param = (PID)
         cursor.execute(sql, param)

@@ -2,7 +2,7 @@ CREATE TABLE person_info (
     PID VARCHAR(32) NOT NULL,
     name VARCHAR(32) UNIQUE NOT NULL,
     hashed_password CHAR(64) NOT NULL,
-    activated BOOLEAN NOT NULL,
+    activated BOOLEAN NOT NULL DEFAULT 1,
     is_admin BOOLEAN NOT NULL DEFAULT 0,
 
     PRIMARY KEY (PID)
