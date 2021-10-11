@@ -49,11 +49,15 @@ class DatabaseAccessor:
         param = {'PID': PID}
         cursor.execute(sql, param)
         res = cursor.fetchone()
+        return res
 
-        if res != None:
-            return res[0]
-        else:
-            return None
+    def getAuthInfo(self, PID, plainPassword):
+        cursor = self._connection.cursor()
+        sql = "SELECT PID, hashed_password FROM person_info WHERE PID = %(PID)s AND hashed_password = SHA2(%(password)s, 256)"
+        param = {'PID': PID, 'password': plainPassword}
+        cursor.execute(sql, param)
+        res = cursor.fetchone()
+        return res
 
     def getFacialVectors(self):
         cursor = self._connection.cursor()  # TODO: format needs change?
