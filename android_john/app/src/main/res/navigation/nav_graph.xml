@@ -51,17 +51,17 @@
     </fragment>
     <fragment
         android:id="@+id/attendanceCaptureFragment"
-        android:name="com.example.scanin.AttendanceCaptureFragment"
+        android:name="com.example.scanin.ui.admin.AttendanceCaptureFragment"
         android:label="attendance_capture_fragment"
         tools:layout="@layout/attendance_capture_fragment" />
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.scanin.HistoryFragment"
+        android:name="com.example.scanin.ui.admin.HistoryFragment"
         android:label="history_fragment"
         tools:layout="@layout/history_fragment" />
     <fragment
         android:id="@+id/sessionsFragment"
-        android:name="com.example.scanin.SessionsFragment"
+        android:name="com.example.scanin.ui.admin.SessionsFragment"
         android:label="sessions_fragment"
         tools:layout="@layout/sessions_fragment" />
 </navigation>

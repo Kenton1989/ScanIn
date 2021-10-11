@@ -1,4 +1,4 @@
-package com.example.scanin;
+package com.example.scanin.ui.admin;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.scanin.R;
 
 public class AttendanceCaptureFragment extends Fragment {
 

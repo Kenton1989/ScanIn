@@ -1,4 +1,4 @@
-package com.example.scanin;
+package com.example.scanin.ui.admin;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,24 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HistoryFragment extends Fragment {
+import com.example.scanin.R;
 
-    private HistoryViewModel mViewModel;
+public class SessionsFragment extends Fragment {
 
-    public static HistoryFragment newInstance() {
-        return new HistoryFragment();
+    private SessionsViewModel mViewModel;
+
+    public static SessionsFragment newInstance() {
+        return new SessionsFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.history_fragment, container, false);
+        return inflater.inflate(R.layout.sessions_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(SessionsViewModel.class);
         // TODO: Use the ViewModel
     }
 

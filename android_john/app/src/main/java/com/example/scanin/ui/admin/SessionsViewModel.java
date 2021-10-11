@@ -1,4 +1,4 @@
-package com.example.scanin;
+package com.example.scanin.ui.admin;
 
 import androidx.lifecycle.ViewModel;
 
