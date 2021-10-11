@@ -59,6 +59,14 @@ def handle_cz3002(request: HttpRequest):
     auth = req['auth']
     param = req['param']
 
+    if auth != None:
+        pid = auth['username']
+        hashed_pwd = auth['hashed_password']
+
+        if not account_mng.authentication(pid, hashed_pwd):
+            log.error('invalid authentication object')
+            return failed_response()
+
     handler = OP_HANDLER.get(operation, _default_handler)
 
     try:
@@ -95,7 +103,7 @@ def set_login_handler():
         PID = param['username']
         password = param['password']
 
-        auth_obj = account_mng.authentication(PID, password)
+        auth_obj = account_mng.login(PID, password)
 
         if auth_obj == None:
             return failed_response('invalid username or password')

@@ -30,7 +30,7 @@ class AccountManager(Manager):
         self._dbAccessor.disableAccount(PID)
         return True
 
-    def authentication(self, PID, plainPassword):
+    def login(self, PID, plainPassword):
         res = self._dbAccessor.getAuthInfo(PID, plainPassword)
         if res == None:
             return None
@@ -39,6 +39,10 @@ class AccountManager(Manager):
                 "username": res[0],
                 "hashed_password": res[1],
             }
+
+    def authentication(self, PID, hashedPassword):
+        trueHash = self._dbAccessor.getHashedPwd(PID)
+        return hashedPassword == trueHash
 
 
 class CheckInManager(Manager):
