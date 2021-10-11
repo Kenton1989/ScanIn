@@ -10,7 +10,7 @@ class Manager:
 class AccountManager(Manager):
 
     def __init__(self, dbAccessor, faceRcognizer) -> Manager:
-        super.__init__(dbAccessor)
+        super().__init__(dbAccessor)
         self._recognizer = faceRcognizer
 
     def registerAccount(self, PID, name, hashed_pwd, image):
