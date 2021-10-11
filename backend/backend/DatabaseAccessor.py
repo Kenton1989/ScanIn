@@ -43,7 +43,7 @@ class DatabaseAccessor:
         cursor.execute(sql, param)
         return cursor.rowcount > 0
 
-    def getHashedPwd(self, PID, inputHashedPassword):
+    def getHashedPwd(self, PID):
         cursor = self._connection.cursor()
         sql = "SELECT hashed_password FROM person_info WHERE PID = %(PID)s"
         param = {'PID': PID}
