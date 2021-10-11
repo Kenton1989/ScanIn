@@ -38,5 +38,30 @@
         android:id="@+id/adminMenu"
         android:name="com.example.scanin.ui.admin.AdminMenu"
         android:label="fragment_admin_menu"
-        tools:layout="@layout/fragment_admin_menu" />
+        tools:layout="@layout/fragment_admin_menu" >
+        <action
+            android:id="@+id/action_adminMenu_to_attendanceCaptureFragment"
+            app:destination="@id/attendanceCaptureFragment" />
+        <action
+            android:id="@+id/action_adminMenu_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_adminMenu_to_sessionsFragment"
+            app:destination="@id/sessionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/attendanceCaptureFragment"
+        android:name="com.example.scanin.AttendanceCaptureFragment"
+        android:label="attendance_capture_fragment"
+        tools:layout="@layout/attendance_capture_fragment" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.scanin.HistoryFragment"
+        android:label="history_fragment"
+        tools:layout="@layout/history_fragment" />
+    <fragment
+        android:id="@+id/sessionsFragment"
+        android:name="com.example.scanin.SessionsFragment"
+        android:label="sessions_fragment"
+        tools:layout="@layout/sessions_fragment" />
 </navigation>

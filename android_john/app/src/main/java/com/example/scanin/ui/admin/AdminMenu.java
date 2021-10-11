@@ -46,22 +46,22 @@ public class AdminMenu extends Fragment {
         scanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext().getApplicationContext(), "scan", Toast.LENGTH_SHORT).show();
-
+                NavHostFragment.findNavController(AdminMenu.this)
+                        .navigate(R.id.action_adminMenu_to_attendanceCaptureFragment);
             }
         });
         historybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext().getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
-
+                NavHostFragment.findNavController(AdminMenu.this)
+                        .navigate(R.id.action_adminMenu_to_historyFragment);
             }
         });
         sessionbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext().getApplicationContext(), "Session", Toast.LENGTH_SHORT).show();
-
+                NavHostFragment.findNavController(AdminMenu.this)
+                        .navigate(R.id.action_adminMenu_to_sessionsFragment);
             }
         });
     }
