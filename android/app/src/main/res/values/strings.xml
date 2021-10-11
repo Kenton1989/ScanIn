@@ -3,6 +3,8 @@
     <string name="register_btn">Register</string>
     <string name="check_in_btn">Check In</string>
     <string name="admin_btn">Admin</string>
+    <string name="base_url">http://104.248.151.223:3002/cz3002</string>
+    <string name="login">login</string>
     <string-array name="repeat_num_array">
         <item>once</item>
         <item>twice</item>

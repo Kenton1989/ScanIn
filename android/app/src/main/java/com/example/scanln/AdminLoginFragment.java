@@ -12,9 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.scanln.databinding.FragmentAdminLoginBinding;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AdminLoginFragment extends Fragment {
     private FragmentAdminLoginBinding binding;
@@ -106,5 +113,25 @@ public class AdminLoginFragment extends Fragment {
             alert.show();
         }
         return valid;
+    }
+
+    private void verifyLogin(){
+        String id=binding.adminId.getText().toString();
+        String pwd=binding.adminPw.getText().toString();
+        RequestQueue queue= Volley.newRequestQueue(requireContext());
+        JSONObject postData=new JSONObject();
+        JSONObject auth=new JSONObject();
+        JSONObject params=new JSONObject();
+        try {
+            auth.put("username", id);
+            auth.put("password",pwd);
+            postData.put("auth",auth);
+            postData.put("operation",R.string.login);
+            postData.put("param",params);
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }
