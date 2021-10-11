@@ -82,6 +82,16 @@ class DatabaseAccessor:
         cursor.execute(sql, param)
         return cursor.rowcount > 0
 
+    def isAdmin(self, PID):
+        cursor = self._connection.cursor() 
+        sql = "SELECT is_admin FROM person_info WHERE PID = %s;"
+        param = (PID)
+        result = cursor.execute(sql, param).fetchone()
+
+        if (result != None):
+            return result[0]
+        else:
+            return None
     # account part end
 
     # check in part
@@ -149,6 +159,22 @@ class DatabaseAccessor:
         cursor = self._connection.cursor()
         sql = "SELECT PID, name FROM person_info WHERE activated = 1"
         cursor.execute(sql)
+        result = tuple(cursor)
+        return result
+
+    def getAllSID(self):
+        cursor = self._connection.cursor()
+        sql = "SELECT SID, session_name FROM session_info"
+        cursor.execute(sql)
+        result = tuple(cursor)
+        return result
+
+    def getSomeSID(self, PID):
+        cursor = self._connection.cursor()
+        sql = "SELECT SID, session_name FROM session_info NATURAL JOIN authorized_attendee" ,\
+            + "WHERE authorized_attendee.PID = %s"
+        param = (PID)
+        cursor.execute(sql, param)
         result = tuple(cursor)
         return result
     # session part end
