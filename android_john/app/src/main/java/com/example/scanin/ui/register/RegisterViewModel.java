@@ -1,4 +1,4 @@
-package com.example.scanin;
+package com.example.scanin.ui.register;
 
 import androidx.lifecycle.ViewModel;
 

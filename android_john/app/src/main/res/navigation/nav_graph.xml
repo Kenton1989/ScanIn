@@ -16,7 +16,19 @@
     </fragment>
     <fragment
         android:id="@+id/register_Fragment"
-        android:name="com.example.scanin.Register_Fragment"
+        android:name="com.example.scanin.ui.register.Register_Fragment"
         android:label="register__fragment"
-        tools:layout="@layout/register__fragment" />
+        tools:layout="@layout/register__fragment" >
+        <action
+            android:id="@+id/action_register_Fragment_to_loginFragment2"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_register_Fragment_to_imageResgistration"
+            app:destination="@id/imageResgistration" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageResgistration"
+        android:name="com.example.scanin.ui.register.ImageResgistration"
+        android:label="image_resgistration_fragment"
+        tools:layout="@layout/image_resgistration_fragment" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.scanin;
+package com.example.scanin.ui.register;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,24 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Register_Fragment extends Fragment {
+import com.example.scanin.R;
 
-    private RegisterViewModel mViewModel;
+public class ImageResgistration extends Fragment {
 
-    public static Register_Fragment newInstance() {
-        return new Register_Fragment();
+    private ImageResgistrationViewModel mViewModel;
+
+    public static ImageResgistration newInstance() {
+        return new ImageResgistration();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.register__fragment, container, false);
+        return inflater.inflate(R.layout.image_resgistration_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ImageResgistrationViewModel.class);
         // TODO: Use the ViewModel
     }
 
