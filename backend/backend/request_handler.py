@@ -86,7 +86,7 @@ def handle_cz3002(request: HttpRequest):
     return response
 
 
-def set_login_handler():
+def _set_login_handler():
     global OP_HANDLER
 
     login_param_schema = {
@@ -120,7 +120,20 @@ def set_login_handler():
     NEED_AUTH['login'] = False
 
 
-set_login_handler()
+_set_login_handler()
+
+
+def _set_get_history_handler():
+    name = 'get_history'
+
+    def handle(op_name, auth, param):
+        return failed_response()
+
+    OP_HANDLER[name] = handle
+    NEED_AUTH[name] = True
+
+
+_set_get_history_handler()
 
 
 def handle_home(request: HttpRequest):
