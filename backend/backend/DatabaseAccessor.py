@@ -10,6 +10,13 @@ DEFAULT_MYSQL_PARAM = {
 }
 
 
+def get_1st_or_None(row):
+    if row == None:
+        return None
+    else:
+        return row[0]
+
+
 class DatabaseAccessor:
     def __init__(self, mySqlParam=DEFAULT_MYSQL_PARAM):
         self._connection = mysql.connector.connect(**mySqlParam)
@@ -49,7 +56,7 @@ class DatabaseAccessor:
         param = {'PID': PID}
         cursor.execute(sql, param)
         res = cursor.fetchone()
-        return res
+        return get_1st_or_None(res)
 
     def getAuthInfo(self, PID, plainPassword):
         cursor = self._connection.cursor()

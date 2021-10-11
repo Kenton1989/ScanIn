@@ -33,6 +33,7 @@ request_json_schema = {
 request_json_validator = jsonschema.Draft6Validator(request_json_schema)
 
 OP_HANDLER = {}
+NEED_AUTH = {}
 
 
 def _default_handler(op_name, auth, param):
@@ -59,15 +60,20 @@ def handle_cz3002(request: HttpRequest):
     auth = req['auth']
     param = req['param']
 
-    if auth != None:
+    handler = OP_HANDLER.get(operation)
+    if handler == None:
+        return _default_handler(operation, auth, param)
+
+    if NEED_AUTH[operation]:
+        if auth == None:
+            return failed_response()
+
         pid = auth['username']
         hashed_pwd = auth['hashed_password']
 
         if not account_mng.authentication(pid, hashed_pwd):
             log.error('invalid authentication object')
             return failed_response()
-
-    handler = OP_HANDLER.get(operation, _default_handler)
 
     try:
         response = handler(operation, auth, param)
@@ -111,6 +117,7 @@ def set_login_handler():
             return success_response({"auth": auth_obj})
 
     OP_HANDLER['login'] = login_handler
+    NEED_AUTH['login'] = False
 
 
 set_login_handler()
