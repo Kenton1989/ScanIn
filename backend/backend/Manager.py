@@ -71,7 +71,7 @@ class AccountManager(Manager):
         }
 
     def verifyAuthentication(self, auth):
-        PID = auth['password']
+        PID = auth['username']
         hashedPassword = auth['hashed_password']
         trueHash = self._dbAccessor.getHashedPwd(PID)
         return hashedPassword == trueHash

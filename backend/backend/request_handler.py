@@ -95,7 +95,7 @@ def register_handler(name, param_schema, need_auth, handler):
     param_validator = jsonschema.Draft7Validator(param_schema)
 
     def verify_and_handle(op_name, auth, param):
-        if not login_param_validator.is_valid(param):
+        if not param_validator.is_valid(param):
             return failed_response('invalid parameters')
 
         if need_auth and auth == None:
@@ -108,10 +108,6 @@ def register_handler(name, param_schema, need_auth, handler):
 
 
 def login_handler(op_name, auth, param):
-    if not login_param_validator.is_valid(param):
-
-        return failed_response()
-
     PID = param['username']
     password = param['password']
 

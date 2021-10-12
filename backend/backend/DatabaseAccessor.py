@@ -87,8 +87,9 @@ class DatabaseAccessor:
     def isAdmin(self, PID):
         cursor = self._connection.cursor()
         sql = "SELECT is_admin FROM person_info WHERE PID = %s;"
-        param = (PID)
-        result = cursor.execute(sql, param).fetchone()
+        param = (PID,)
+        cursor.execute(sql, param)
+        result = cursor.fetchone()
 
         if result != None:
             return result[0]
