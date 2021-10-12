@@ -1,5 +1,7 @@
 package com.example.scanln;
 
+import android.app.AlertDialog;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,9 +14,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.scanln.databinding.FragmentSummaryBinding;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SummaryFragment extends Fragment {
     private FragmentSummaryBinding binding;
@@ -36,8 +44,10 @@ public class SummaryFragment extends Fragment {
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
         binding.idTxt.setText(model.getId());
         binding.nameTxt.setText(model.getName());
-        Drawable front=new BitmapDrawable(getResources(),model.getFront().getValue());
-        binding.retakeCenter.setBackground(front);
+        //Drawable front=new BitmapDrawable(getResources(),model.getFront().getValue());
+        Bitmap bitmap=model.getFront().getValue();
+        System.out.println(model.getFront().getValue()==null);
+        binding.retakeCenter.setImageBitmap(model.getFront().getValue());
         binding.retakeCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -52,5 +62,58 @@ public class SummaryFragment extends Fragment {
 
             }
         });
+    }
+
+    private void registerUser(){
+        String pid=model.getId();
+        String name=model.getName();
+        String pwd=model.getPassword();
+        String front_img=model.getStringFront();
+        Map<String,String> params=new HashMap<>();
+        params.put(VRequestQueue.REGISTER_PID_FIELD,pid);
+        params.put(VRequestQueue.REGISTER_IMG_FIELD,front_img);
+        params.put(VRequestQueue.REGISTER_NAME_FIELD,name);
+        params.put(VRequestQueue.REGISTER_PWD_FIELD,pwd);
+
+        String operation=VRequestQueue.REGISTER_USER;
+        Response.Listener<JSONObject> listener= response -> {
+            if(response.optBoolean(VRequestQueue.RESULT_PARAM)){
+                onSuccess(response);
+            }
+            else{
+                onFail(response);
+            }
+        };
+        Response.ErrorListener errorListener= this::onRequestError;
+        VRequestQueue.getInstance(requireContext()).createRequest(operation,params,listener,errorListener);
+    }
+
+    private void onSuccess(JSONObject response){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("Register Succeed")
+                .setMessage("User "+model.getName()+" is registered.")
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    model.clear();
+                    NavDirections action=SummaryFragmentDirections.actionNavigationSummaryToNavigationMainMenu();
+                    Navigation.findNavController(getView()).navigate(action);
+                });
+        builder.show();
+    }
+    private void onFail(JSONObject response){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("Register Fail")
+                .setMessage("Fail due to error: "+response.optString(VRequestQueue.DETAIL_FIELD))
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+    private void onRequestError(VolleyError error){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("Login Fail")
+                .setMessage("Due to server connection error: "+error.toString())
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.scanln.faceDetector;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.media.Image;
 import android.util.Log;
 
@@ -23,9 +23,8 @@ public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>>{
             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_NONE)
             .build();
     private FaceDetector detector= FaceDetection.getClient(realTimeOpts);
-
-    public FaceDetectorProcessor(ImageStringGenerator generator) {
-        super(generator);
+    public FaceDetectorProcessor(ImageUtils generator, Context context) {
+        super(generator,context);
     }
 
     @Override
@@ -34,10 +33,10 @@ public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>>{
     }
 
     @Override
-    public void onSuccess(List<Face> result, Bitmap bitmap) {
+    public void onSuccess(List<Face> result, ImageProxy image) {
         if(result.size()==1){
             Face face=result.get(0);
-            generator.process(bitmap,face.getBoundingBox());
+            this.result=generator.crop(image,face.getBoundingBox(),context);
         }
     }
 

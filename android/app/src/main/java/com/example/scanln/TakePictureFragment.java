@@ -7,11 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.ImageProxy;
@@ -21,26 +25,33 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.scanln.databinding.FragmentTakePictureBinding;
+import com.example.scanln.faceDetector.FaceDetectorProcessor;
+import com.example.scanln.faceDetector.ImageUtils;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TakePictureFragment extends Fragment {
+public class TakePictureFragment extends Fragment{
     private RegisterViewModel model;
     private Bitmap cur;
     private ExecutorService cameraExecutor;
     private ImageCapture imageCapture;
     private FragmentTakePictureBinding binding;
+    private FaceDetectorProcessor analyser;
+    private ProcessCameraProvider cameraProvider;
     private boolean valid;
 
     public TakePictureFragment(){
@@ -59,13 +70,12 @@ public class TakePictureFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
-
-        model=new ViewModelProvider(this).get(RegisterViewModel.class);
+        model=new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
         setUpCamera();
         binding.takePictureBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                System.out.println("button clicked");
+
                 capture();
             }
         });
@@ -82,9 +92,11 @@ public class TakePictureFragment extends Fragment {
         binding.nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                System.out.println(model.getFront().getValue()==null);
+                cameraProvider.unbindAll();
+                cameraExecutor.shutdown();
                 NavDirections action=TakePictureFragmentDirections
                         .actionNavigationTakePictureToNavigationSummary();
-                cameraExecutor.shutdown();
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -101,8 +113,11 @@ public class TakePictureFragment extends Fragment {
             imageCapture = new ImageCapture.Builder()
                     .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();
             System.out.println("imagecapture ready");
+            ImageAnalysis analysis=new ImageAnalysis.Builder().build();
+            analyser=new FaceDetectorProcessor(new ImageUtils(),requireContext());
+
+            analysis.setAnalyzer(cameraExecutor,analyser);
             preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
-            ProcessCameraProvider cameraProvider;
             CameraSelector cameraSelector=new CameraSelector.Builder()
                     .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build();
             try {
@@ -110,7 +125,7 @@ public class TakePictureFragment extends Fragment {
                 cameraProvider = cameraProviderFuture.get();
                 cameraProvider.unbindAll();
                 cameraProvider.bindToLifecycle(requireActivity(), cameraSelector,
-                        preview,imageCapture);
+                        preview,imageCapture,analysis);
                 System.out.println("provider ready");
 
             } catch (ExecutionException | InterruptedException e) {
@@ -121,30 +136,27 @@ public class TakePictureFragment extends Fragment {
     }
 
     private void capture(){
-        if(imageCapture==null) return;
-        imageCapture.takePicture(cameraExecutor, new ImageCapture.OnImageCapturedCallback() {
-            @Override
-            public void onCaptureSuccess(ImageProxy imageProxy){
-                Bitmap bitmap=proxytToBitmap(imageProxy);
-                super.onCaptureSuccess(imageProxy);
-                cur=bitmap;
-            }
 
-            @Override
-            public void onError(ImageCaptureException e){
-                super.onError(e);
-            }
-        });
+        imageCapture.takePicture(
+                cameraExecutor, new ImageCapture.OnImageCapturedCallback() {
+                    @Override
+                    public void onCaptureSuccess(@NonNull ImageProxy image) {
+                        super.onCaptureSuccess(image);
+                        checkPicture();
+                    }
+
+                    @Override
+                    public void onError(@NonNull ImageCaptureException exception) {
+                        super.onError(exception);
+                    }
+                });
     }
 
-    private Bitmap proxytToBitmap(ImageProxy proxy){
-        ImageProxy.PlaneProxy planeProxy=proxy.getPlanes()[0];
-        ByteBuffer buffer=planeProxy.getBuffer();
-        byte[] bytes=new byte[buffer.remaining()];
-
-        buffer.get(bytes);
-        System.out.println(bytes);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    private void checkPicture(){
+        Bitmap face=analyser.getResult();
+        Log.d("check picture", String.valueOf(face==null));
+        model.setFront(face);
+        binding.nextBtn.setActivated(true);
     }
 
 }

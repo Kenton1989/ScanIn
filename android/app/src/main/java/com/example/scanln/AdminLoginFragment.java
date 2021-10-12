@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.scanln.databinding.FragmentAdminLoginBinding;
@@ -23,9 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminLoginFragment extends Fragment {
     private FragmentAdminLoginBinding binding;
-
+    AdminViewModel model=new AdminViewModel();
     public AdminLoginFragment(){
         super(R.layout.fragment_admin_login);
     }
@@ -40,44 +45,18 @@ public class AdminLoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
-        binding.adminConfirmLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                boolean valid=validateInput();
-                boolean success=true;
-                String error="";
-                if(valid){
-                    //send to backend
-
-                }
-                else return;
-                if(!success){
-                    AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Login Fail")
-                           .setCancelable(false)
-                            .setMessage(error)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                }
-                else{
-                    NavDirections action=AdminLoginFragmentDirections
-                            .actionNavigationAdminLoginToNavigationAdminMenu();
-                    Navigation.findNavController(view).navigate(action);
-                }
+        model=new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
+        binding.adminConfirmLoginBtn.setOnClickListener(view1 -> {
+            boolean valid=validateInput();
+            if(valid){
+                verifyLogin();
             }
         });
 
-        binding.adminCancelLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                NavDirections action=AdminLoginFragmentDirections
-                        .actionNavigationAdminLoginToNavigationMainMenu();
-                Navigation.findNavController(view).navigate(action);
-            }
+        binding.adminCancelLoginBtn.setOnClickListener(view12 -> {
+            NavDirections action=AdminLoginFragmentDirections
+                    .actionNavigationAdminLoginToNavigationMainMenu();
+            Navigation.findNavController(view12).navigate(action);
         });
     }
 
@@ -88,12 +67,7 @@ public class AdminLoginFragment extends Fragment {
             builder.setMessage("please provide id")
                     .setTitle("Missing Input")
                     .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
+                    .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
             valid=false;
             AlertDialog alert=builder.create();
             alert.show();
@@ -102,12 +76,7 @@ public class AdminLoginFragment extends Fragment {
             builder.setMessage("please provide password")
                     .setTitle("Missing Input")
                     .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
+                    .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
             valid=false;
             AlertDialog alert=builder.create();
             alert.show();
@@ -116,22 +85,45 @@ public class AdminLoginFragment extends Fragment {
     }
 
     private void verifyLogin(){
-        String id=binding.adminId.getText().toString();
-        String pwd=binding.adminPw.getText().toString();
-        RequestQueue queue= Volley.newRequestQueue(requireContext());
-        JSONObject postData=new JSONObject();
-        JSONObject auth=new JSONObject();
-        JSONObject params=new JSONObject();
-        try {
-            auth.put("username", id);
-            auth.put("password",pwd);
-            postData.put("auth",auth);
-            postData.put("operation",R.string.login);
-            postData.put("param",params);
+        Map<String,String> params=new HashMap<>();
+        params.put("username",binding.adminId.getText().toString());
+        params.put("password",binding.adminPw.getText().toString());
+        String operation=VRequestQueue.LOGIN;
+        Response.Listener<JSONObject> listener= response -> {
+            if(response.optBoolean(VRequestQueue.RESULT_PARAM)){
+                onSuccess(response);
+            }
+            else{
+                onFail(response);
+            }
+        };
+        Response.ErrorListener errorListener= this::onRequestError;
+        VRequestQueue.getInstance(requireContext()).createRequest(operation,params,listener,errorListener);
 
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
+    }
 
+    private void onSuccess(JSONObject response){
+        JSONObject auth=response.optJSONObject(VRequestQueue.RETURN);
+        model.setUser(auth.optString(VRequestQueue.USERNAME_FIELD));
+        model.setPwd(auth.optString(VRequestQueue.PWD_FIELD));
+        NavDirections action=AdminLoginFragmentDirections.actionNavigationAdminLoginToNavigationAdminMenu();
+        Navigation.findNavController(getView()).navigate(action);
+    }
+    private void onFail(JSONObject response){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("Login Fail")
+                .setMessage("Reason: "+response.optString(VRequestQueue.DETAIL_FIELD))
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+        builder.show();
+
+    }
+    private void onRequestError(VolleyError error){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("Login Fail")
+                .setMessage("Due to server connection error: "+error.toString())
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 }

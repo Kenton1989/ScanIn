@@ -1,12 +1,13 @@
 package com.example.scanln.faceDetector;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.media.Image;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
@@ -19,9 +20,12 @@ import java.nio.ByteBuffer;
 
 public abstract class VisionProcessorBase<T> implements ImageAnalysis.Analyzer{
 
-    public ImageStringGenerator generator;
+    public ImageUtils generator;
+    public Context context;
+    public Bitmap result;
 
-    public VisionProcessorBase(ImageStringGenerator generator){
+    public VisionProcessorBase(ImageUtils generator, Context context){
+        this.context=context;
         this.generator=generator;
     }
 
@@ -34,7 +38,7 @@ public abstract class VisionProcessorBase<T> implements ImageAnalysis.Analyzer{
         task.addOnSuccessListener(new OnSuccessListener<T>() {
             @Override
             public void onSuccess(T t) {
-                VisionProcessorBase.this.onSuccess(t,proxytToBitmap(imageProxy));
+                VisionProcessorBase.this.onSuccess(t,imageProxy);
                 imageProxy.close();
             }
         }).addOnFailureListener(new OnFailureListener(){
@@ -44,18 +48,15 @@ public abstract class VisionProcessorBase<T> implements ImageAnalysis.Analyzer{
                 imageProxy.close();
             }
         });
+
     }
 
-    private Bitmap proxytToBitmap(ImageProxy proxy){
-        ImageProxy.PlaneProxy planeProxy=proxy.getPlanes()[0];
-        ByteBuffer buffer=planeProxy.getBuffer();
-        byte[] bytes=new byte[buffer.remaining()];
-        buffer.get(bytes);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    public Bitmap getResult(){
+        return result;
     }
 
     protected abstract Task<T> detectImage(InputImage image);
-    public abstract void onSuccess(T result, Bitmap bitmap);
+    public abstract void onSuccess(T result, ImageProxy image);
     protected abstract void onFailure(Exception e);
     public abstract void stop();
 }

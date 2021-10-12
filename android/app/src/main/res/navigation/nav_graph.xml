@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_navigation_summary_to_navigation_register"
             app:destination="@id/navigation_register" />
+        <action
+            android:id="@+id/action_navigation_summary_to_navigation_main_menu"
+            app:destination="@id/navigation_main_menu" />
     </fragment>
     <fragment
         android:id="@+id/navigation_take_picture"
