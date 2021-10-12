@@ -2,7 +2,7 @@ import face_recognition
 import numpy
 from DatabaseAccessor import DatabaseAccessor
 from typing import List
-
+from PIL import Image
 
 def _checkLen(vects, labels):
     if len(vects) != len(labels):
@@ -34,7 +34,9 @@ class FaceRecognizer:
             tempDict[init_labels[idx]] = init_vectors[idx]
         self.label_dict = tempDict
 
-    def recognize_face(self, image: numpy.ndarray):
+    def recognize_face(self, raw_images: Image):
+        assert len(raw_images) > 1
+        image = numpy.array(raw_images[0])
         unknown_encoding = face_recognition.face_encodings(image)
         results = face_recognition.compare_faces(
             self.vectors, unknown_encoding, tolerance=Hyperparams.TOLERANCE)
@@ -42,9 +44,12 @@ class FaceRecognizer:
         for idx in range(len(results)):
             if results[idx]:
                 result_labels.append(self.labels[idx])
+        # TODO: only return one optimal PID or None
         return result_labels
 
-    def register_face(self, pid: int, image: numpy.ndarray):
+    def register_face(self, pid: int, raw_images: List[Image]):
+        assert len(raw_images) > 1
+        image = numpy.array(raw_images[0])
         result = face_recognition.face_encodings(image)
         self._send_db_register(pid, result)
 

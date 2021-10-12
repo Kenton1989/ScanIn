@@ -17,7 +17,8 @@ def send(opName, params={}, auth=None):
 
     data_byte = json.dumps(data).encode('utf8')
     print('Sending', data, 'to', URL)
-    req = Request(URL, data_byte, headers=header, method='GET')
+    req = Request(URL, data_byte, headers=header, method='POST')
+    
     response = urlopen(req)
     
     print('Loading response')
@@ -27,4 +28,4 @@ def send(opName, params={}, auth=None):
 
 
 if __name__ == '__main__':
-    print(send('get_something'))
+    print(send('get_something', {}, {'username': 'aba', 'password': 'hey'}))

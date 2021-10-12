@@ -9,3 +9,14 @@ AUTHENTICATION_OBJECT = {
     "required": ["username", "hashed_password"],
     "additionalProperties": False,
 }
+
+EMPTY_JSON_OBJECT = {
+    "type": "object",
+    "properties": {},
+}
+
+IMAGE_STRING = {
+    "type": "string",
+    "contentEncoding": "base64",
+    "contentMediaType": "image/jpeg"
+}

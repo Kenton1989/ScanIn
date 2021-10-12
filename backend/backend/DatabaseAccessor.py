@@ -1,5 +1,5 @@
 import mysql.connector
-from datetime import datetime
+from datetime import datetime, date
 
 DEFAULT_MYSQL_PARAM = {
     'host': 'localhost',
@@ -25,11 +25,11 @@ class DatabaseAccessor:
         self._connection.close()
 
     # account part
-    def registration(self, PID, name, plainPwd):
+    def registration(self, PID, name, hashedPwd):
         cursor = self._connection.cursor()
 
-        sql = "INSERT INTO person_info(PID, name, hashed_password, activated) VALUES (%(PID)s, %(name)s, SHA2(%(passwd)s, 256), 1);"
-        param = {'PID': PID, 'name': name, 'passwd': plainPwd}
+        sql = "INSERT INTO person_info(PID, name, hashed_password, activated) VALUES (%(PID)s, %(name)s, %(passwd)s, 1);"
+        param = {'PID': PID, 'name': name, 'passwd': hashedPwd}
         cursor.execute(sql, param)
 
         return cursor.rowcount > 0
@@ -83,36 +83,36 @@ class DatabaseAccessor:
         return cursor.rowcount > 0
 
     def isAdmin(self, PID):
-        cursor = self._connection.cursor() 
+        cursor = self._connection.cursor()
         sql = "SELECT is_admin FROM person_info WHERE PID = %s;"
         param = (PID)
         result = cursor.execute(sql, param).fetchone()
 
-        if (result != None):
+        if result != None:
             return result[0]
         else:
             return None
     # account part end
 
     # check in part
-    def getAttendance(self, PID, SID):
+    def takeAttendance(self, PID, SID):
         cursor = self._connection.cursor()
-        sql = "SELECT * FROM attendance WHERE PID = %(PID)s AND SID = %(SID)s"
+        sql = "INSERT INTO attendance(PID, SID, checkIn) SELECT %(PID)s, %(SID)s, (COUNT(*)+1)%2 FROM attendance a WHERE a.PID = %(PID)s AND a.SID = %(SID)s;"
         param = {'PID': PID, 'SID': SID}
         cursor.execute(sql, param)
-        result = cursor.fetchone()
-        return result
 
-    def takeAttendance(self, PID, SID, checkIn):
-        cursor = self._connection.cursor()
-        sql = "INSERT INTO attendance(PID, SID, checkIn) VALUES  (%(PID)s, %(SID)s, %(checkIn)s)"
-        param = {'PID': PID, 'SID': SID, 'checkIn': checkIn}
-        cursor.execute(sql, param)
-        
         return cursor.rowcount > 0
     # check in part end
 
     # session part
+    def isAuthorizedPerson(self, PID, SID):
+        cursor = self._connection.cursor()
+        sql = "SELECT COUNT(*) FROM authorized_attendee WHERE PID = %(PID)s AND SID = %(SID)s"
+        param = {'PID': PID, 'SID': SID}
+        cursor.execute(sql, param)
+        res = cursor.fetchone()
+        return res > 0
+
     def addAuthorizedPerson(self, PID, SID):
         cursor = self._connection.cursor()
         sql = "INSERT INTO authorized_attendee(PID, SID) VALUES  (%(PID)s, %(SID)s)"
@@ -180,9 +180,7 @@ class DatabaseAccessor:
 
     def getSomeSID(self, PID):
         cursor = self._connection.cursor()
-        sql = "SELECT SID, session_name, start_time, end_time ",\
-            + "FROM session_info NATURAL JOIN authorized_attendee " ,\
-            + "WHERE authorized_attendee.PID = %s"
+        sql = "SELECT session_info.SID, session_name, start_time, end_time FROM session_info JOIN authorized_attendee ON session_info.SID = authorized_attendee.SID WHERE authorized_attendee.PID = %s"
         param = (PID)
         cursor.execute(sql, param)
         result = tuple(cursor)
@@ -190,35 +188,38 @@ class DatabaseAccessor:
     # session part end
 
     # history part
-    def getAttendance(self, PID, SID, startDate, endDate, limit=50):
+    def getAttendance(self, PID, SID, startDatetime: date, endDatetime: date, limit=50):
         cursor = self._connection.cursor()
-        sql = "SELECT * FROM attendance WHERE 1=1"
+        sql = "SELECT a.AID, a.PID, p.name, a.SID, s.session_name, a.check_time, a.checkIn FROM attendance a JOIN person_info p ON a.PID = p.PID JOIN session_info s ON a.SID = s.SID WHERE 1=1"
+
         param = {}
 
-        if (PID):
-            sql += " AND PID = %(PID)s"
+        if PID != None:
+            sql += " AND a.PID = %(PID)s"
             param['PID'] = PID
-        if (SID):
-            sql += " AND SID = %(SID)s"
+        if SID != None:
+            sql += " AND a.SID = %(SID)s"
             param['SID'] = SID
-        if (startDate):
-            sql += " AND check_time >= %(startDate)s"
-            param['startDate'] = startDate
-        if (endDate):
-            sql += " AND check_time <= %(endDate)s"
-            param['endDate'] = endDate
+        if startDatetime != None:
+            sql += " AND a.check_time >= %(startDatetime)s"
+            param['startDatetime'] = startDatetime
+        if endDatetime != None:
+            sql += " AND a.check_time <= %(endDatetime)s"
+            param['endDatetime'] = endDatetime
 
-        sql += " ORDER BY check_time DESC LIMIT %d" % int(limit)
+        sql += " ORDER BY a.check_time DESC LIMIT %(limit)s;"
+        param['limit'] = limit
 
         cursor.execute(sql, param)
         result = tuple(cursor)
         return result
 
-    def getCurrentSessions(self, PID):
+    def getCurrentSessions(self, PID, currentTime: datetime = None):
         cursor = self._connection.cursor()
 
-        currentTime = datetime.now.__str__()
-        sql = "SELECT * FROM session_info NATURAL JOIN authorized_attendee WHERE PID = %(PID)s AND start_time >= %(cTime)s AND end_time <= %(cTime)s"
+        if currentTime == None:
+            currentTime = datetime.now()
+        sql = "SELECT s.SID, s.session_name, s.start_time, s.end_time FROM session_info s JOIN authorized_attendee a ON s.SID = a.SID WHERE PID = %(PID)s AND start_time >= %(cTime)s AND end_time <= %(cTime)s"
         param = {'PID': PID, 'cTime': currentTime}
         cursor.execute(sql, param)
         result = tuple(cursor)
