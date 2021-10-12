@@ -31,7 +31,7 @@ class DatabaseAccessor:
         sql = "INSERT INTO person_info(PID, name, hashed_password, activated) VALUES (%(PID)s, %(name)s, %(passwd)s, 1);"
         param = {'PID': PID, 'name': name, 'passwd': hashedPwd}
         cursor.execute(sql, param)
-
+        self._connection.commit()
         return cursor.rowcount > 0
 
     def getUserInfo(self, PID):
@@ -48,6 +48,7 @@ class DatabaseAccessor:
         sql = "UPDATE person_info SET activated = False WHERE PID = %(PID)s"
         param = {'PID': PID}
         cursor.execute(sql, param)
+        self._connection.commit()
         return cursor.rowcount > 0
 
     def getHashedPwd(self, PID):
@@ -80,6 +81,7 @@ class DatabaseAccessor:
         sql = "INSERT INTO facial_vector VALUES (%s" + ", %s"*128 + ");"
         param = (PID,) + tuple(facialVector)
         cursor.execute(sql, param)
+        self._connection.commit()
         return cursor.rowcount > 0
 
     def isAdmin(self, PID):
@@ -100,6 +102,7 @@ class DatabaseAccessor:
         sql = "INSERT INTO attendance(PID, SID, checkIn) SELECT %(PID)s, %(SID)s, (COUNT(*)+1)%2 FROM attendance a WHERE a.PID = %(PID)s AND a.SID = %(SID)s;"
         param = {'PID': PID, 'SID': SID}
         cursor.execute(sql, param)
+        self._connection.commit()
 
         return cursor.rowcount > 0
     # check in part end
@@ -118,6 +121,7 @@ class DatabaseAccessor:
         sql = "INSERT INTO authorized_attendee(PID, SID) VALUES  (%(PID)s, %(SID)s)"
         param = {'PID': PID, 'SID': SID}
         cursor.execute(sql, param)
+        self._connection.commit()
         return cursor.rowcount > 0
 
     def removeAuthorizedPerson(self, PID, SID):
@@ -125,6 +129,7 @@ class DatabaseAccessor:
         sql = "DELETE FROM authorized_attendee(PID, SID) WHERE PID = %(PID)s AND SID = %(SID)s"
         param = {'PID': PID, 'SID': SID}
         cursor.execute(sql, param)
+        self._connection.commit()
         return cursor.rowcount > 0
 
     def addSession(self, sessionName, creator, venue, startTime, endTime, nextSession):
@@ -132,6 +137,7 @@ class DatabaseAccessor:
         sql = "INSERT INTO session_info(creator, session_name, venue, start_time, end_time, next_session) VALUES(%s, %s, %s, %s, %s, %s)"
         param = (creator, sessionName, venue, startTime, endTime, nextSession)
         cursor.execute(sql, param)
+        self._connection.commit()
         return cursor.lastrowid
 
     def deleteSession(self, SID):
@@ -139,6 +145,7 @@ class DatabaseAccessor:
         sql = "DELETE FROM session_info WHERE SID = %(SID)s"
         param = {'SID': SID}
         cursor.execute(sql, param)
+        self._connection.commit()
         return cursor.rowcount > 0
 
     def getNextSession(self, SID):
@@ -154,7 +161,8 @@ class DatabaseAccessor:
         sql = "UPDATE session_info  SET start_time = %(sTime)s AND end_time = %(eTime)s WHERE SID = %(SID)s"
         param = {'sTime': newStartTime, 'eTime': newEndTime, 'SID': SID}
         cursor.execute(sql, param)
-        result = tuple(cursor)
+        self._connection.commit()
+        return cursor.rowcount > 0
 
     def getAllPerson(self):
         cursor = self._connection.cursor()
