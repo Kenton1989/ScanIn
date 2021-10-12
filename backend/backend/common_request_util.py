@@ -33,7 +33,7 @@ def parse_datetime(val):
     if isinstance(val, datetime):
         return val
 
-def parse_image_string(val: str) -> Image:
+def parse_image_string(val: str) -> Image.Image:
     data_bytes = base64.decodestring(val)
     data_stream = io.BytesIO(data_bytes)
     image = Image.open(data_stream, formats=['JPEG'])

@@ -34,7 +34,7 @@ class FaceRecognizer:
             tempDict[init_labels[idx]] = init_vectors[idx]
         self.label_dict = tempDict
 
-    def recognize_face(self, raw_images: Image):
+    def recognize_face(self, raw_images: Image.Image):
         assert len(raw_images) > 1
         image = numpy.array(raw_images[0])
         unknown_encoding = face_recognition.face_encodings(image)
@@ -47,7 +47,7 @@ class FaceRecognizer:
         # TODO: only return one optimal PID or None
         return result_labels
 
-    def register_face(self, pid: int, raw_images: List[Image]):
+    def register_face(self, pid: int, raw_images: List[Image.Image]):
         assert len(raw_images) > 1
         image = numpy.array(raw_images[0])
         result = face_recognition.face_encodings(image)

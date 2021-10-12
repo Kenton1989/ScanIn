@@ -25,7 +25,7 @@ class AccountManager(Manager):
         self._recognizer = faceRecognizer
 
     # TODO: format of image
-    def registerAccount(self, PID, name, plainPwd, imageList: List[Image]):
+    def registerAccount(self, PID, name, plainPwd, imageList: List[Image.Image]):
         existing_user = self._dbAccessor.getUserInfo(PID)
         if existing_user != None:
             return False, 'existing user id'
