@@ -68,7 +68,7 @@ class DatabaseAccessor:
         return res
 
     def getFacialVectors(self):
-        cursor = self._connection.cursor()  # TODO: format needs change?
+        cursor = self._connection.cursor()
         sql = "SELECT * FROM facial_vector;"
         cursor.execute(sql)
         result = tuple(cursor)
@@ -77,7 +77,7 @@ class DatabaseAccessor:
         return pid, feature
 
     def addFacialVector(self, PID, facialVector):
-        cursor = self._connection.cursor()  # TODO: format needs change?
+        cursor = self._connection.cursor()
         sql = "INSERT INTO facial_vector VALUES (%s" + ", %s"*128 + ");"
         param = (PID,) + tuple(facialVector)
         cursor.execute(sql, param)

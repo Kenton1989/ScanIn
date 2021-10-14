@@ -16,14 +16,21 @@ def send(opName, params={}, auth=None):
     }
 
     data_byte = json.dumps(data).encode('utf8')
-    print('Sending', data, 'to', URL)
+    print('Sending')
+    print('URL:', URL)
+    print('Method:', 'POST')
+    print('Content-Type:', 'application/json')
+    print('Body:')
+    print(data_byte)
+    print()
     req = Request(URL, data_byte, headers=header, method='POST')
 
     response = urlopen(req)
 
-    print('Loading response')
     reply = json.load(response)
-
+    print('Response:')
+    print(json.dumps(reply))
+    print()
     return reply
 
 
@@ -68,6 +75,7 @@ def test_get_history():
 
 
 def test_get_last_history():
+    print('Python dict format:')
     print(send(
         opName='get_last_history',
         params={
@@ -82,6 +90,6 @@ def test_get_last_history():
 
 
 if __name__ == '__main__':
-    # test_login()
+    test_login()
     # test_get_history_param()
-    test_get_last_history()
+    # test_get_last_history()
