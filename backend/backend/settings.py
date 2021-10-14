@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,44 +100,48 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-def loggingLevel():
-    if DEBUG:
-        return 'DEBUG'
-    else:
-        return os.getenv('DJANGO_LOG_LEVEL', 'ERROR')
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
-        'standard': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
         },
     },
     'handlers': {
-        # this is what you see in runserver console
         'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
-            'formatter': 'standard',
+            'formatter': 'simple'
         },
-        # this handler logs to file
-        # this is just a name so loggers can reference it
         'file': {
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            #  choose file location of your liking
-            'filename': os.path.normpath(os.path.join(BASE_DIR, 'logs','django.log')),
-            'formatter': 'standard'
+            'filename': Path(BASE_DIR).joinpath('log', 'django.log'),
         },
     },
     'loggers': {
-        # django logger
         'django': {
-            # log to console and file handlers
-            'handlers': ['console', 'file'],
-            # choose verbosity
-            'level': loggingLevel(),
+            'handlers': ['console'],
+            'propagate': True,
         },
-    },
+        'cz3002.custom': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        }
+    }
 }
 
 
