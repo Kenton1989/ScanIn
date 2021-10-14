@@ -88,8 +88,15 @@ def test_get_last_history():
     ))
 
 
-
 if __name__ == '__main__':
-    test_login()
+    print(send(
+        opName='login',
+        params={
+            # 'username': 'admin',
+            'password': 'password',
+        },
+        auth=None
+    ))
+    # test_login()
     # test_get_history_param()
     # test_get_last_history()
