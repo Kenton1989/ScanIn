@@ -7,7 +7,7 @@ from PIL import Image
 
 
 class FaceRecognizer:
-    def __init__(self, db_accessor: DatabaseAccessor.DatabaseAccessor):
+    def __init__(self, db_accessor: DatabaseAccessor):
         self.vectors: List[numpy.array] = None
         self.labels: List[str] = None
         self.db_accessor: DatabaseAccessor() = db_accessor
