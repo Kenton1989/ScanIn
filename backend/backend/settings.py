@@ -127,10 +127,10 @@ LOGGING = {
             'formatter': 'simple'
         },
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': Path(BASE_DIR).joinpath('log', 'django.log'),
-            'formatter': 'verbose'
+            'formatter': 'simple'
         },
     },
     'loggers': {
