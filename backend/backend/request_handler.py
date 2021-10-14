@@ -269,14 +269,12 @@ def register_user_handler(name, auth, param):
     pwd = param['password']
     front_face = parse_image_string(param['front_face'])
 
-    success, err_msg = account_mng.registerAccount(
-        pid, name, pwd, [front_face])
+    try:
+        account_mng.registerAccount(pid, name, pwd, [front_face])
+    except ManagerError as e:
+        return failed_response(str(e))
 
-    if success:
-        return success_response()
-    else:
-        return failed_response(err_msg)
-
+    return success_response()
 
 register_handler(
     name='register_user',

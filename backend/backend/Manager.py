@@ -17,6 +17,8 @@ class Manager:
     def __init__(self, dbAccessor: DatabaseAccessor) -> None:
         self._dbAccessor = dbAccessor
 
+class ManagerError(Exception):
+    pass
 
 class AccountManager(Manager):
 
@@ -28,22 +30,16 @@ class AccountManager(Manager):
     def registerAccount(self, PID, name, plainPwd, imageList: List[Image.Image]):
         existing_user = self._dbAccessor.getUserInfo(PID)
         if existing_user != None:
-            return False, 'existing user id'
+            raise ManagerError('user id already exists')
 
         for image in imageList:
             existing_face = self._recognizer.recognize_face(image)
             if existing_face != None:
-                return False, 'existing user face'
+                raise ManagerError('the face already exists')
 
         hashedPwd = self._hashPassword(plainPwd)
         self._dbAccessor.registration(PID, name, hashedPwd)
-
-        # TODO: check the behavior with recognizer
-        for image in imageList:
-            facial_vector = self._recognizer.register_face(image)
-            self._dbAccessor.addFacialVector(PID, facial_vector)
-
-        return True, ''
+        self._recognizer.register_face(PID, imageList)
 
     def disableAccount(self, PID):
         exist = self._dbAccessor.getUserInfo(PID)
