@@ -29,7 +29,7 @@ request_json_schema = {
         'auth': NULLABLE(AUTHENTICATION_OBJECT),
         'param': {'type': 'object', 'additionalProperties': True}
     },
-    'required': ['operation', 'auth', 'param'],
+    'required': ['operation', 'param'],
     'additionalProperties': False,
 }
 request_json_validator = jsonschema.Draft7Validator(request_json_schema)
@@ -59,7 +59,7 @@ def handle_cz3002(request: HttpRequest):
         return failed_response()
 
     operation = req['operation']
-    auth = req['auth']
+    auth = req.get('auth', None)
     param = req['param']
 
     handler = OP_HANDLER.get(operation)
