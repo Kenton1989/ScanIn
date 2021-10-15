@@ -30,17 +30,9 @@ public class ImageUtils {
         //System.out.println(proxy.getCropRect());
         //System.out.println(bitmap.getHeight()+" "+bitmap.getWidth());
         //System.out.println(rect.left+" "+rect.top+" "+rect.width()+" "+rect.height());
-        //Bitmap cropped=Bitmap.createBitmap(bitmap,rect.top,rect.left,rect.height(),rect.width());
+        Bitmap cropped=Bitmap.createBitmap(bitmap,rect.top,rect.left,rect.height(),rect.width());
         //System.out.println(cropped.getHeight()+" "+cropped.getWidth());
-        return bitmap;
-    }
-
-    public String getString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp=Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
+        return cropped;
     }
 
     public static Bitmap yuv420ToBitmap(Image image, Context context){
@@ -111,5 +103,13 @@ public class ImageUtils {
             }
         }
         return nv21;
+    }
+
+    public static String getJPEGString(Bitmap bitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return Base64.encodeToString(byteArray,Base64.DEFAULT);
+
     }
 }

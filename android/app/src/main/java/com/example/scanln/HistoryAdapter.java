@@ -1,23 +1,22 @@
 package com.example.scanln;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.scanln.databinding.RecordListItemBinding;
+import com.example.scanln.model.History;
+import com.example.scanln.model.Record;
 
 import java.util.List;
 
-public class RecordHistoryAdapter extends BaseAdapter{
-    private List<Record> records;
+public class HistoryAdapter extends BaseAdapter{
+    private List<History> records;
     private Context context;
 
 
-    public RecordHistoryAdapter(List<Record> records,Context context) {
+    public HistoryAdapter(List<History> records, Context context) {
         this.records = records;
         this.context=context;
 
@@ -45,10 +44,10 @@ public class RecordHistoryAdapter extends BaseAdapter{
         TextView pid=view.findViewById(R.id.pid);
         TextView time=view.findViewById(R.id.time);
 
-        Record record=(Record) getItem(position);
-        sid.setText(record.getSession_id());
-        pid.setText(record.getStudent_id());
-        time.setText(record.getTime().toString());
+        History record=(History) getItem(position);
+        sid.setText(record.getSid());
+        pid.setText(record.getPid());
+        time.setText(record.getTime());
         return view;
     }
 }

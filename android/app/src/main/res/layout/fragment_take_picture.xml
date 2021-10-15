@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="60dp"
         android:layout_marginBottom="28dp"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,7 +49,7 @@
         app:rippleColor="@color/design_default_color_background" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -57,7 +57,7 @@
         android:layout_marginTop="2dp"
         android:layout_marginEnd="100dp"
         android:text="Hint:"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -156,7 +156,9 @@ public class TakePictureFragment extends Fragment{
         Bitmap face=analyser.getResult();
         Log.d("check picture", String.valueOf(face==null));
         model.setFront(face);
+        model.setString_front(ImageUtils.getJPEGString(face));
         binding.nextBtn.setActivated(true);
+        binding.hint.setText("Picture taken successfully, click next to continue.");
     }
 
 }

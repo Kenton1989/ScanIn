@@ -29,8 +29,6 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
     public RegisterFragment(){
         super(R.layout.fragment_register);
-        //binding=FragmentRegisterBinding.inflate(getLayoutInflater());
-
     }
 
     @Override
@@ -77,12 +75,12 @@ public class RegisterFragment extends Fragment {
                 if(valid){
                     model.setId(binding.inputId.getEditText().getText().toString());
                     model.setName(binding.inputName.getEditText().getText().toString());
+                    model.setPassword(binding.inputPw.getEditText().getText().toString());
 
                     NavDirections action=RegisterFragmentDirections.
                             actionNavigationRegisterToNavigationTakePicture();
                     Navigation.findNavController(view).navigate(action);
                 }
-
             }
         });
 

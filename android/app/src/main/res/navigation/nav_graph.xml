@@ -120,6 +120,19 @@
         android:id="@+id/navigation_checkin"
         android:label="Checkin"
         android:name="com.example.scanln.CheckInFragment"
-        tools:layout="@layout/fragment_checkin"/>
+        tools:layout="@layout/fragment_checkin">
+        <action
+            android:id="@+id/action_navigation_checkin_to_navigation_checkin_confirm"
+            app:destination="@id/navigation_checkin_confirm" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_checkin_confirm"
+        android:label="Checkin Confirm"
+        android:name="com.example.scanln.CheckinConfirmFragment"
+        tools:layout="@layout/fragment_checkin_confirm">
+        <action
+            android:id="@+id/action_navigation_checkin_confirm_to_navigation_checkin"
+            app:destination="@id/navigation_checkin" />
+    </fragment>
 
 </navigation>

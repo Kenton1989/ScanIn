@@ -15,8 +15,6 @@
     <string-array name="repeat_freq_array">
         <item>day</item>
         <item>week</item>
-        <item>month</item>
-        <item>year</item>
     </string-array>
 
 </resources>

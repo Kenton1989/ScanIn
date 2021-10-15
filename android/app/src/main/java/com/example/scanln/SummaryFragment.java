@@ -2,6 +2,7 @@ package com.example.scanln;
 
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.navigation.Navigation;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.scanln.databinding.FragmentSummaryBinding;
+import com.example.scanln.model.Auth;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -44,10 +46,12 @@ public class SummaryFragment extends Fragment {
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
         binding.idTxt.setText(model.getId());
         binding.nameTxt.setText(model.getName());
-        //Drawable front=new BitmapDrawable(getResources(),model.getFront().getValue());
         Bitmap bitmap=model.getFront().getValue();
-        System.out.println(model.getFront().getValue()==null);
-        binding.retakeCenter.setImageBitmap(model.getFront().getValue());
+        Matrix matrix=new Matrix();
+        matrix.postRotate(270);
+        bitmap=Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),
+                bitmap.getHeight(),matrix,true);
+        binding.retakeCenter.setImageBitmap(bitmap);
         binding.retakeCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -59,17 +63,27 @@ public class SummaryFragment extends Fragment {
         binding.confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                registerUser();
+            }
+        });
 
+        binding.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                NavDirections action=SummaryFragmentDirections
+                        .actionNavigationSummaryToNavigationRegister();
+                Navigation.findNavController(view).navigate(action);
             }
         });
     }
 
     private void registerUser(){
+        Auth auth=new Auth("","");
         String pid=model.getId();
         String name=model.getName();
         String pwd=model.getPassword();
         String front_img=model.getStringFront();
-        Map<String,String> params=new HashMap<>();
+        Map<String,Object> params=new HashMap<>();
         params.put(VRequestQueue.REGISTER_PID_FIELD,pid);
         params.put(VRequestQueue.REGISTER_IMG_FIELD,front_img);
         params.put(VRequestQueue.REGISTER_NAME_FIELD,name);
@@ -85,7 +99,7 @@ public class SummaryFragment extends Fragment {
             }
         };
         Response.ErrorListener errorListener= this::onRequestError;
-        VRequestQueue.getInstance(requireContext()).createRequest(operation,params,listener,errorListener);
+        VRequestQueue.getInstance(requireContext()).createRequest(params,operation,auth,listener,errorListener);
     }
 
     private void onSuccess(JSONObject response){

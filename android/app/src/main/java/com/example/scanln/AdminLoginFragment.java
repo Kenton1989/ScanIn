@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.scanln.databinding.FragmentAdminLoginBinding;
+import com.example.scanln.model.Auth;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -85,9 +86,10 @@ public class AdminLoginFragment extends Fragment {
     }
 
     private void verifyLogin(){
-        Map<String,String> params=new HashMap<>();
+        Map<String,Object> params=new HashMap<>();
         params.put("username",binding.adminId.getText().toString());
         params.put("password",binding.adminPw.getText().toString());
+        Auth auth=new Auth("","");
         String operation=VRequestQueue.LOGIN;
         Response.Listener<JSONObject> listener= response -> {
             if(response.optBoolean(VRequestQueue.RESULT_PARAM)){
@@ -98,14 +100,15 @@ public class AdminLoginFragment extends Fragment {
             }
         };
         Response.ErrorListener errorListener= this::onRequestError;
-        VRequestQueue.getInstance(requireContext()).createRequest(operation,params,listener,errorListener);
+        VRequestQueue.getInstance(requireContext())
+                .createRequest(params,operation,auth,listener,errorListener);
 
     }
 
     private void onSuccess(JSONObject response){
-        JSONObject auth=response.optJSONObject(VRequestQueue.RETURN);
-        model.setUser(auth.optString(VRequestQueue.USERNAME_FIELD));
-        model.setPwd(auth.optString(VRequestQueue.PWD_FIELD));
+        JSONObject auth=response.optJSONObject(VRequestQueue.RETURN)
+                .optJSONObject(VRequestQueue.AUTHENTICATION_OBJECT);
+       model.setAuth(auth);
         NavDirections action=AdminLoginFragmentDirections.actionNavigationAdminLoginToNavigationAdminMenu();
         Navigation.findNavController(getView()).navigate(action);
     }
@@ -121,7 +124,7 @@ public class AdminLoginFragment extends Fragment {
     private void onRequestError(VolleyError error){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         builder.setTitle("Login Fail")
-                .setMessage("Due to server connection error: "+error.toString())
+                .setMessage("Due to server connection error: "+error.getMessage())
                 .setCancelable(false)
                 .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
         builder.show();
