@@ -31,9 +31,11 @@ class FaceRecognizer:
         cur_min_encoding = None
 
         for label, vector in zip(self.labels, self.vectors):
-            if face_recognition.face_distance(vector, unknown_encoding) < cur_min_distance:
+            dist = face_recognition.face_distance(vector, unknown_encoding)
+            if dist < cur_min_distance:
                 cur_min_label = label
-                cur_min_distance = unknown_encoding
+                cur_min_distance = dist
+                cur_min_encoding = vector
 
         if cur_min_label == None:
             return None
