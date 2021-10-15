@@ -124,6 +124,9 @@
         <action
             android:id="@+id/action_navigation_checkin_to_navigation_checkin_confirm"
             app:destination="@id/navigation_checkin_confirm" />
+        <action
+            android:id="@+id/action_navigation_checkin_to_navigation_main_menu"
+            app:destination="@id/navigation_main_menu" />
     </fragment>
     <fragment
         android:id="@+id/navigation_checkin_confirm"

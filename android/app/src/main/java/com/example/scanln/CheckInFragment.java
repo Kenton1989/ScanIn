@@ -56,6 +56,7 @@ public class CheckInFragment extends Fragment {
     private ImageCapture imageCapture;
     private ImageAnalysis analysis;
     private FaceDetectorProcessor analyser;
+    private ProcessCameraProvider cameraProvider;
     private CheckinViewModel model;
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater,
@@ -69,10 +70,19 @@ public class CheckInFragment extends Fragment {
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
         setUpCamera();
-        while(!valid){
+        binding.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                cameraProvider.unbindAll();
+                cameraExecutor.shutdown();
+
+                NavDirections action=CheckInFragmentDirections.actionNavigationCheckinToNavigationMainMenu();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
+        while(!valid&&cur!=null){
             cur=analyser.getResult();
             recognizeFace();
-
         }
 
     }
@@ -84,14 +94,14 @@ public class CheckInFragment extends Fragment {
         cameraProviderFuture.addListener(() -> {
             Preview preview=new Preview.Builder()
                     .build();
-
-            ProcessCameraProvider cameraProvider;
             CameraSelector cameraSelector=new CameraSelector.Builder()
                     .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build();
             analysis=new ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build();
+
             analyser=new FaceDetectorProcessor(new ImageUtils(),requireContext());
+
             analysis.setAnalyzer(cameraExecutor,analyser);
             try {
 
@@ -144,6 +154,8 @@ public class CheckInFragment extends Fragment {
                 sessionBriefs.add(sessionBrief);
             }
             model.setRecords(sessionBriefs);
+            cameraProvider.unbindAll();
+            cameraExecutor.shutdown();
             NavDirections action=CheckInFragmentDirections.actionNavigationCheckinToNavigationCheckinConfirm();
             Navigation.findNavController(requireView()).navigate(action);
         } catch (Exception e){
