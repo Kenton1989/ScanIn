@@ -57,7 +57,7 @@ class FaceRecognizer:
         self._send_db_register(pid, result)
 
     def _send_db_register(self, pid: str, encoding: numpy.ndarray):
-        self.db_accessor.addFacialVector(pid, encoding)
+        self.db_accessor.addFacialVector(pid, tuple(encoding))
 
     def get_vectors(self):
         return self.vectors
