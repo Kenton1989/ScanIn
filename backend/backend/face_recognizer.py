@@ -22,7 +22,7 @@ class FaceRecognizer:
         self.labels = init_labels
 
     def recognize_face(self, raw_images: List[Image.Image]):
-        assert len(raw_images) > 1
+        assert len(raw_images) > 0
         image = numpy.array(raw_images[0])
         unknown_encoding = face_recognition.face_encodings(image)
 
@@ -47,7 +47,7 @@ class FaceRecognizer:
         return cur_min_label
 
     def register_face(self, pid: str, raw_images: List[Image.Image]):
-        assert len(raw_images) > 1
+        assert len(raw_images) > 0
         image = numpy.array(raw_images[0])
 
         result = face_recognition.face_encodings(image)
