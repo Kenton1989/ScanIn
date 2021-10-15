@@ -8,7 +8,7 @@ from PIL import Image
 
 class FaceRecognizer:
     def __init__(self, db_accessor: DatabaseAccessor):
-        self.vectors: List[numpy.array] = None
+        self.vectors: numpy.array = None
         self.labels: List[str] = None
         self.db_accessor: DatabaseAccessor() = db_accessor
         self.setup()
@@ -18,7 +18,7 @@ class FaceRecognizer:
         assert len(init_labels) == len(init_vectors)
         assert all([len(v) == 128 for v in init_vectors])
 
-        self.vectors = [numpy.array(v) for v in init_vectors]
+        self.vectors = numpy.array(init_vectors)
         self.labels = init_labels
 
     def recognize_face(self, raw_images: List[Image.Image]):
@@ -53,7 +53,7 @@ class FaceRecognizer:
         image = numpy.array(raw_images[0])
 
         result = face_recognition.face_encodings(image)[0]
-        self.vectors.append(result)
+        self.vectors = numpy.concatenate((self.vectors, [result]), axis=0)
         self.labels.append(pid)
 
         self._send_db_register(pid, result)
