@@ -25,11 +25,12 @@ class DatabaseAccessor:
         self._connection.close()
 
     # account part
-    def registration(self, PID, name, hashedPwd):
+    def registration(self, PID, name, hashedPwd, isAdmin=False):
         cursor = self._connection.cursor()
 
-        sql = "INSERT INTO person_info(PID, name, hashed_password, activated) VALUES (%(PID)s, %(name)s, %(passwd)s, 1);"
-        param = {'PID': PID, 'name': name, 'passwd': hashedPwd}
+        sql = "INSERT INTO person_info(PID, name, hashed_password, activated, is_admin) VALUES (%(PID)s, %(name)s, %(passwd)s, 1, %(is_admin)s);"
+        param = {'PID': PID, 'name': name,
+                 'passwd': hashedPwd, 'is_admin': isAdmin}
         cursor.execute(sql, param)
         self._connection.commit()
         return cursor.rowcount > 0
@@ -37,7 +38,7 @@ class DatabaseAccessor:
     def getUserInfo(self, PID):
         cursor = self._connection.cursor()
 
-        sql = "SELECT * FROM person_info WHERE PID = %(PID)s"
+        sql = "SELECT PID, name, is_admin FROM person_info WHERE PID = %(PID)s"
         param = {'PID': PID}
         cursor.execute(sql, param)
         result = cursor.fetchone()
