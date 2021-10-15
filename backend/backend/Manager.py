@@ -105,8 +105,8 @@ class CheckInManager(Manager):
         self._recognizer = faceRecognizer
     # return pid
 
-    def recognition(self, image):
-        recognizedPID = self._recognizer.recognize_face(image)
+    def recognition(self, imageList):
+        recognizedPID = self._recognizer.recognize_face(imageList)
         return recognizedPID
 
     def getCurrentAction(self, PID, SID):

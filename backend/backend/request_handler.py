@@ -279,7 +279,7 @@ def recognized_face_handler(name, auth, param):
     face = parse_image_string(param['face'])
     want_session = bool(param.get('want_session', False))
 
-    pid = check_in_mng.recognition(face)
+    pid = check_in_mng.recognition([face])
     if pid == None:
         return failed_response('unknown face')
 

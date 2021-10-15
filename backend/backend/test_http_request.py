@@ -110,12 +110,10 @@ if __name__ == '__main__':
     # test_get_last_history()
 
     print(send(
-        opName='register_user',
+        opName='recognize_face',
         params={
-            'pid': 'U1922499K',
-            'name': 'Kenton',
-            'password': '12345678',
-            'front_face': img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg')
+            'want_session': False,
+            'face': img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg')
         },
         auth={
             'username': 'admin',
