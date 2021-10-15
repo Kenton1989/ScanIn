@@ -26,10 +26,7 @@ request_json_schema = {
     'type': 'object',
     'properties': {
         'operation': {'type': 'string'},
-        'auth': {'anyOf': [
-            {'type': 'null'},
-            AUTHENTICATION_OBJECT,
-        ]},
+        'auth': NULLABLE(AUTHENTICATION_OBJECT),
         'param': {'type': 'object', 'additionalProperties': True}
     },
     'required': ['operation', 'auth', 'param'],
@@ -48,7 +45,7 @@ def _default_handler(op_name, auth, param):
 @csrf_exempt
 def handle_cz3002(request: HttpRequest):
     if request.method != 'POST':
-        log.debug('Only POST method is used')
+        log.debug('Only POST method is accepted')
         return failed_response()
 
     try:
@@ -174,26 +171,11 @@ register_handler(
     param_schema={
         'type': 'object',
         'properties': {
-            'pid': {'anyOf': [
-                {'type': 'null'},
-                {'type': 'string'},
-            ]},
-            'sid': {'anyOf': [
-                {'type': 'null'},
-                {'type': 'integer'},
-            ]},
-            'beg_time': {'anyOf': [
-                {'type': 'null'},
-                {'type': 'date-time'},
-            ]},
-            'end_time': {'anyOf': [
-                {'type': 'null'},
-                {'type': 'date-time'},
-            ]},
-            'max_num': {'anyOf': [
-                {'type': 'null'},
-                {'type': 'integer', "minimum": 0, }
-            ]},
+            'pid': NULLABLE({'type': 'string'}),
+            'sid': NULLABLE({'type': 'integer'}),
+            'beg_time': NULLABLE(DATETIME_STR),
+            'end_time': NULLABLE(DATETIME_STR),
+            'max_num': NULLABLE({'type': 'integer', "minimum": 0}),
         },
     },
     need_auth=True,
@@ -246,8 +228,8 @@ register_handler(
         "properties": {
             "session_name": {'type': 'string'},
             "venue": {'type': 'string'},
-            "beg_time": {'type': 'date-time'},
-            "end_time": {'type': 'date-time'},
+            "beg_time": DATETIME_STR,
+            "end_time": DATETIME_STR,
             "repeat": {'type': 'integer'},
             "period": {'type': 'integer'},
             "period_unit": {'enum': ['day', 'week']},
@@ -275,6 +257,7 @@ def register_user_handler(name, auth, param):
         return failed_response(str(e))
 
     return success_response()
+
 
 register_handler(
     name='register_user',
@@ -319,12 +302,7 @@ register_handler(
         'type': 'object',
         'properties': {
             'face': IMAGE_STRING,
-            'want_session': {
-                'anyOf': [
-                    {'type': 'boolean'},
-                    {'type': 'null'}
-                ]
-            }
+            'want_session': NULLABLE({'type': 'boolean'})
         },
         'required': ['face']
     },

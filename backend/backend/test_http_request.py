@@ -1,5 +1,6 @@
 from urllib.request import Request, urlopen
 import json
+import base64
 
 URL = 'http://104.248.151.223:3002/cz3002/'
 
@@ -32,6 +33,13 @@ def send(opName, params={}, auth=None):
     print(json.dumps(reply))
     print()
     return reply
+
+
+def img_to_base64(filename):
+    with open(filename, 'rb') as img:
+        databyte = img.read()
+
+    return base64.b64encode(databyte)
 
 
 def test_login():
@@ -97,6 +105,21 @@ if __name__ == '__main__':
     #     },
     #     auth=None
     # ))
-    test_login()
+    # test_login()
     # test_get_history_param()
     # test_get_last_history()
+
+    print(send(
+        opName='register_user',
+        params={
+            'pid': 'U1922499K',
+            'name': 'Kenton',
+            'password': '12345678',
+            'front_face': img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg')
+        },
+        auth={
+            'username': 'admin',
+            'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
+        }
+    ))
+    # img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg')
