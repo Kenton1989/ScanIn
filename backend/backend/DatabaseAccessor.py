@@ -167,14 +167,14 @@ class DatabaseAccessor:
 
     def getAllPerson(self):
         cursor = self._connection.cursor()
-        sql = "SELECT PID, name FROM person_info WHERE activated = 1"
+        sql = "SELECT PID, name, is_admin FROM person_info WHERE activated = 1"
         cursor.execute(sql)
         result = tuple(cursor)
         return result
 
     def getSomePerson(self, PID):
         cursor = self._connection.cursor()
-        sql = "SELECT PID, name FROM person_info WHERE activated = 1 AND PID = %s"
+        sql = "SELECT PID, name, is_admin FROM person_info WHERE activated = 1 AND PID = %s"
         param = (PID)
         cursor.execute(sql, param)
         result = tuple(cursor)

@@ -242,10 +242,11 @@ def _to_session_brief(list_of_session_tuple: list):
 
 def _to_person_object(list_of_persion_tuple: list):
     res = []
-    for pid, name in list_of_persion_tuple:
+    for pid, name, is_admin in list_of_persion_tuple:
         res.append({
             'pid': pid,
             'name': name,
+            'is_admin': bool(is_admin),
         })
     return res
 
