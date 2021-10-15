@@ -32,7 +32,7 @@ class FaceRecognizer:
 
         dist_list = face_recognition.face_distance(
             self.vectors, unknown_encoding)
-        min_idx = dist_list.argmin(dist_list)
+        min_idx = numpy.argmin(dist_list)
 
         min_distance = dist_list[min_idx]
         min_label = self.labels[min_idx]
