@@ -23,30 +23,25 @@ class FaceRecognizer:
 
     def recognize_face(self, raw_images: List[Image.Image]):
         assert len(raw_images) > 0
+
+        if len(self.vectors) <= 0:
+            return None
+
         image = numpy.array(raw_images[0])
-        unknown_encoding = face_recognition.face_encodings(image)
+        unknown_encoding = face_recognition.face_encodings(image)[0]
 
-        cur_min_distance = math.inf
-        cur_min_label = None
-        cur_min_encoding = None
+        dist_list = face_recognition.face_distance(
+            self.vectors, unknown_encoding)
+        min_idx = dist_list.argmin(dist_list)
 
-        for label, vector in zip(self.labels, self.vectors):
-            dist = face_recognition.face_distance(vector, unknown_encoding)
-            if dist < cur_min_distance:
-                cur_min_label = label
-                cur_min_distance = dist
-                cur_min_encoding = vector
+        min_distance = dist_list[min_idx]
+        min_label = self.labels[min_idx]
+        min_encoding = self.vectors[min_idx]
 
-        if cur_min_label == None:
+        if min_distance >= Hyperparams.TOLERANCE:
             return None
 
-        results = face_recognition.compare_faces(
-            [cur_min_encoding], unknown_encoding, tolerance=Hyperparams.TOLERANCE)
-
-        if results[0] == False:
-            return None
-
-        return cur_min_label
+        return min_label
 
     def register_face(self, pid: str, raw_images: List[Image.Image]):
         assert len(raw_images) > 0
