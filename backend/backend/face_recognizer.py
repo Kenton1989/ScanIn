@@ -28,7 +28,10 @@ class FaceRecognizer:
             return None
 
         image = numpy.array(raw_images[0])
-        unknown_encoding = face_recognition.face_encodings(image)[0]
+        unknown_encoding_list = face_recognition.face_encodings(image)
+        if len(unknown_encoding_list) <= 0:
+            return None
+        unknown_encoding = unknown_encoding_list[0]
 
         dist_list = face_recognition.face_distance(
             self.vectors, unknown_encoding)

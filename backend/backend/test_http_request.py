@@ -112,8 +112,8 @@ if __name__ == '__main__':
     print(send(
         opName='recognize_face',
         params={
-            'want_session': False,
-            'face': img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg')
+            'want_session': True,
+            'face': img_to_base64('C:\\Users\\Temp\\Pictures\\dummy.jpg')
         },
         auth={
             'username': 'admin',
