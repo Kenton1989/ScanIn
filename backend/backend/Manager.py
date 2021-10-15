@@ -82,17 +82,14 @@ class AccountManager(Manager):
             return []
 
         res = self._dbAccessor.getAllPerson()
-        return _to_person_object(res)
+        return _to_person_object_list(res)
 
     def getUserInfo(self, PID):
         res = self._dbAccessor.getUserInfo(PID)
         if res == None:
             return None
         else:
-            return {
-                'pid': res[0],
-                'name': res[1],
-            }
+            return _to_person_object(*res)
 
     def _hashPassword(self, plainPwd: str):
         return hashlib.sha256(plainPwd.encode('utf8')).hexdigest()
@@ -218,7 +215,7 @@ class HistoryManager(Manager):
             res = self._dbAccessor.getAllPerson()
         else:
             res = self._dbAccessor.getSomePerson(PID)
-        return _to_person_object(res)
+        return _to_person_object_list(res)
 
     def preloadSID(self, PID):
         if (self._dbAccessor.isAdmin(PID)):
@@ -240,14 +237,18 @@ def _to_session_brief(list_of_session_tuple: list):
     return res
 
 
-def _to_person_object(list_of_persion_tuple: list):
+def _to_person_object(val1, val2, val3):
+    return {
+        'pid': val1,
+        'name': val2,
+        'is_admin': bool(val3),
+    }
+
+
+def _to_person_object_list(list_of_persion_tuple: list):
     res = []
     for pid, name, is_admin in list_of_persion_tuple:
-        res.append({
-            'pid': pid,
-            'name': name,
-            'is_admin': bool(is_admin),
-        })
+        res.append(_to_person_object(pid, name, is_admin))
     return res
 
 
