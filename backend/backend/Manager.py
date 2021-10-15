@@ -39,9 +39,9 @@ class AccountManager(Manager):
         if existing_face != None:
             raise ManagerError('the face already exists')
 
+        self._recognizer.register_face(PID, imageList)
         hashedPwd = self._hashPassword(plainPwd)
         self._dbAccessor.registration(PID, name, hashedPwd)
-        self._recognizer.register_face(PID, imageList)
 
     def disableAccount(self, PID):
         exist = self._dbAccessor.getUserInfo(PID)

@@ -50,7 +50,7 @@ class FaceRecognizer:
         assert len(raw_images) > 0
         image = numpy.array(raw_images[0])
 
-        result = face_recognition.face_encodings(image)
+        result = face_recognition.face_encodings(image)[0]
         self.vectors.append(result)
         self.labels.append(pid)
 
