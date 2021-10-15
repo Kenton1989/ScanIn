@@ -335,7 +335,7 @@ register_handler(
 def check_in_out_handler(name, auth, param):
     sid = param['sid']
     pid = account_mng.getPidFromAuth(auth)
-    res = check_in_mng.checkIn(pid, sid, checkIn)
+    res = check_in_mng.checkIn(pid, sid)
     if res == None:
         return failed_response()
     else:

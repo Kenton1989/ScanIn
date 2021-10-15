@@ -4,6 +4,7 @@ import base64
 from PIL import Image
 import io
 
+
 def success_response(returnVal={}):
     assert isinstance(returnVal, dict)
     res = {
@@ -25,6 +26,7 @@ def failed_response(errMsg='invalid request'):
     response = JsonResponse(res)
     return response
 
+
 def parse_datetime(val):
     if val == None:
         return None
@@ -33,8 +35,9 @@ def parse_datetime(val):
     if isinstance(val, datetime):
         return val
 
+
 def parse_image_string(val: str) -> Image.Image:
-    data_bytes = base64.decodestring(val)
+    data_bytes = base64.decodestring(val.encode('ascii'))
     data_stream = io.BytesIO(data_bytes)
     image = Image.open(data_stream, formats=['JPEG'])
     return image

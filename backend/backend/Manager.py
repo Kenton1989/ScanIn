@@ -13,12 +13,15 @@ def get_1st_or_None(row):
     else:
         return row[0]
 
+
 class Manager:
     def __init__(self, dbAccessor: DatabaseAccessor) -> None:
         self._dbAccessor = dbAccessor
 
+
 class ManagerError(Exception):
     pass
+
 
 class AccountManager(Manager):
 
@@ -32,10 +35,9 @@ class AccountManager(Manager):
         if existing_user != None:
             raise ManagerError('user id already exists')
 
-        for image in imageList:
-            existing_face = self._recognizer.recognize_face(image)
-            if existing_face != None:
-                raise ManagerError('the face already exists')
+        existing_face = self._recognizer.recognize_face(imageList)
+        if existing_face != None:
+            raise ManagerError('the face already exists')
 
         hashedPwd = self._hashPassword(plainPwd)
         self._dbAccessor.registration(PID, name, hashedPwd)
@@ -121,7 +123,8 @@ class CheckInManager(Manager):
             return None
         if not self._dbAccessor.takeAttendance(PID, SID):
             return None
-        res = _to_history_object(self._dbAccessor.getAttendance(PID, SID, limit=1))
+        res = _to_history_object(
+            self._dbAccessor.getAttendance(PID, SID, limit=1))
         return get_1st_or_None(res)
 
 

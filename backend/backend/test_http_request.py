@@ -39,7 +39,7 @@ def img_to_base64(filename):
     with open(filename, 'rb') as img:
         databyte = img.read()
 
-    return base64.b64encode(databyte)
+    return base64.b64encode(databyte).decode('ascii')
 
 
 def test_login():
@@ -122,4 +122,4 @@ if __name__ == '__main__':
             'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
         }
     ))
-    # img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg')
+    # print(img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg'))
