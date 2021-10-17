@@ -122,7 +122,7 @@ class DatabaseAccessor:
         param = {'PID': PID, 'SID': SID}
         cursor.execute(sql, param)
         res = cursor.fetchone()
-        return res > 0
+        return res != None
 
     def addAuthorizedPerson(self, PID, SID):
         cursor = self._get_cursor()
@@ -182,7 +182,7 @@ class DatabaseAccessor:
     def getSomePerson(self, PID):
         cursor = self._get_cursor()
         sql = "SELECT PID, name, is_admin FROM person_info WHERE activated = 1 AND PID = %s"
-        param = (PID)
+        param = (PID,)
         cursor.execute(sql, param)
         result = tuple(cursor)
         return result
@@ -197,14 +197,14 @@ class DatabaseAccessor:
     def getSomeSID(self, PID):
         cursor = self._get_cursor()
         sql = "SELECT session_info.SID, session_name, start_time, end_time FROM session_info JOIN authorized_attendee ON session_info.SID = authorized_attendee.SID WHERE authorized_attendee.PID = %s"
-        param = (PID)
+        param = (PID,)
         cursor.execute(sql, param)
         result = tuple(cursor)
         return result
     # session part end
 
     # history part
-    def getAttendance(self, PID, SID, startDatetime: date, endDatetime: date, limit=50):
+    def getAttendance(self, PID=None, SID=None, startDatetime: datetime=None, endDatetime: datetime=None, limit=50):
         cursor = self._get_cursor()
         sql = "SELECT a.AID, a.PID, p.name, a.SID, s.session_name, a.check_time, a.checkIn FROM attendance a JOIN person_info p ON a.PID = p.PID JOIN session_info s ON a.SID = s.SID WHERE 1=1"
 

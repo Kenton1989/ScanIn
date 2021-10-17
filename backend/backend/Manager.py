@@ -137,7 +137,7 @@ class SessionManager(Manager):
     def addSession(self, times, period: timedelta, attendeeList,
                    sessionName, creator, venue, sTime: datetime, eTime: datetime):
 
-        if (not self._dbAccessor.isAdmin()):
+        if (not self._dbAccessor.isAdmin(creator)):
             return False
 
         sessionList = []

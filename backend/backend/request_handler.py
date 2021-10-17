@@ -216,7 +216,7 @@ def add_session_handler(name, auth, param):
     attendees = param['attendees']
     creator = account_mng.getPidFromAuth(auth)
 
-    period_delta = period * TIME_UNIT_MAP[period_delta]
+    period_delta = period * TIME_UNIT_MAP[period_unit]
     session_mng.addSession(repeat, period_delta, attendees,
                            s_name, creator, venue, beg_time, end_time)
 
