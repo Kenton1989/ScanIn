@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpRequest, JsonResponse
-from datetime import datetime
+from datetime import datetime, timezone
 import base64
 from PIL import Image
 import io
@@ -31,9 +31,9 @@ def parse_datetime(val):
     if val == None:
         return None
     if isinstance(val, str):
-        return datetime.fromisoformat(val)
+        return datetime.fromisoformat(val).astimezone(timezone.utc)
     if isinstance(val, datetime):
-        return val
+        return val.astimezone(timezone.utc)
 
 
 def parse_image_string(val: str) -> Image.Image:

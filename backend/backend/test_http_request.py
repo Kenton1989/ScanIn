@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone
+
 from urllib.request import Request, urlopen
 import json
 import base64
@@ -76,7 +77,7 @@ def test_get_history(pid=None, sid=None, beg=None, end=None, max_num=10):
     }
     print(send(
         opName='get_history',
-        params={},
+        params=param,
         auth=ADMIN_AUTH
     ))
 
@@ -108,9 +109,9 @@ def test_get_last_history(auth, sid):
     ))
 
 
-def test_get_last_history(auth, sid):
+def test_check_in_out(auth, sid):
     print(send(
-        opName='get_last_history',
+        opName='check_in_out',
         params={
             'sid': sid
         },
@@ -129,9 +130,11 @@ def test_get_attendees():
 if __name__ == '__main__':
     auth = {'username': 'U1922499K', 'hashed_password':
             'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'}
-    test_login('U1922499K', '12345678')
+    # test_login('U1922499K', '12345678')
     # test_get_history_param(auth)
-    # test_get_history()
+    t = datetime.fromisoformat('2021-10-17T22:45').astimezone(timezone.utc)
+    # print(t)
+    test_get_history(beg=t.isoformat())
     # test_get_attendees()
     # test_get_last_history(auth, 5)
     # test_check_in_out(auth, 5)
