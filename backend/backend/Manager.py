@@ -52,7 +52,8 @@ class AccountManager(Manager):
         return True
 
     def login(self, PID, plainPassword):
-        res = self._dbAccessor.getAuthInfo(PID, plainPassword)
+        hashedPasswd = hashlib.sha256(plainPassword).hexdigest()
+        res = self._dbAccessor.getAuthInfo(PID, hashedPasswd)
         if res == None:
             return None
         else:

@@ -23,11 +23,11 @@ class DatabaseAccessor:
 
     def close(self):
         self._connection.close()
-    
+
     def _get_cursor(self):
         if not self._connection.is_connected():
             self._connection.reconnect()
-        
+
         return self._connection.cursor()
 
     # account part
@@ -44,7 +44,7 @@ class DatabaseAccessor:
     def getUserInfo(self, PID):
         cursor = self._get_cursor()
 
-        sql = "SELECT PID, name, is_admin FROM person_info WHERE PID = %(PID)s"
+        sql = "SELECT PID, name, is_admin FROM person_info WHERE PID = %(PID)s AND activated = True"
         param = {'PID': PID}
         cursor.execute(sql, param)
         result = cursor.fetchone()
@@ -66,10 +66,10 @@ class DatabaseAccessor:
         res = cursor.fetchone()
         return get_1st_or_None(res)
 
-    def getAuthInfo(self, PID, plainPassword):
+    def getAuthInfo(self, PID, hashedPasswd):
         cursor = self._get_cursor()
-        sql = "SELECT PID, hashed_password FROM person_info WHERE PID = %(PID)s AND hashed_password = SHA2(%(password)s, 256)"
-        param = {'PID': PID, 'password': plainPassword}
+        sql = "SELECT PID, hashed_password FROM person_info WHERE PID = %(PID)s AND hashed_password = %(password)s"
+        param = {'PID': PID, 'password': hashedPasswd}
         cursor.execute(sql, param)
         res = cursor.fetchone()
         return res

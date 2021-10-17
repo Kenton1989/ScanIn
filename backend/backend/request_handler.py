@@ -112,8 +112,10 @@ def login_handler(op_name, auth, param):
 
     if auth_obj == None:
         return failed_response('invalid username or password')
-    else:
-        return success_response({"auth": auth_obj})
+
+    user_info = account_mng.getUserInfo(PID)
+
+    return success_response({'user': user_info, 'auth': auth_obj})
 
 
 register_handler(
@@ -175,7 +177,7 @@ register_handler(
             'sid': NULLABLE({'type': 'integer'}),
             'beg_time': NULLABLE(DATETIME_STR),
             'end_time': NULLABLE(DATETIME_STR),
-            'max_num': NULLABLE({'type': 'integer', "minimum": 0}),
+            'max_num': NULLABLE({'type': 'integer', 'minimum': 0}),
         },
     },
     need_auth=True,
@@ -224,22 +226,22 @@ def add_session_handler(name, auth, param):
 register_handler(
     name='add_session',
     param_schema={
-        "type": "object",
-        "properties": {
-            "session_name": {'type': 'string'},
-            "venue": {'type': 'string'},
-            "beg_time": DATETIME_STR,
-            "end_time": DATETIME_STR,
-            "repeat": {'type': 'integer'},
-            "period": {'type': 'integer'},
-            "period_unit": {'enum': ['day', 'week']},
-            "attendees": {
+        'type': 'object',
+        'properties': {
+            'session_name': {'type': 'string'},
+            'venue': {'type': 'string'},
+            'beg_time': DATETIME_STR,
+            'end_time': DATETIME_STR,
+            'repeat': {'type': 'integer'},
+            'period': {'type': 'integer'},
+            'period_unit': {'enum': ['day', 'week']},
+            'attendees': {
                 'type': 'array',
                 'items': {'type': 'string'}
             },
 
         },
-        "required": ["session_name", "venue", "beg_time", "end_time", "repeat", "period", "period_unit", "attendees"]
+        'required': ['session_name', 'venue', 'beg_time', 'end_time', 'repeat', 'period', 'period_unit', 'attendees']
     },
     need_auth=True,
     handler=add_session_handler)
