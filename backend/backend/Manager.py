@@ -232,8 +232,8 @@ def _to_session_brief(list_of_session_tuple: list):
         res.append({
             'sid': sid,
             'name': name,
-            'beg_time': beg,
-            'end_time': end
+            'beg_time': _encode_datetime(beg),
+            'end_time': _encode_datetime(end),
         })
     return res
 
