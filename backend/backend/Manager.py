@@ -1,6 +1,6 @@
 from typing import List
 from DatabaseAccessor import DatabaseAccessor
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from PIL import Image
 import hashlib
 
