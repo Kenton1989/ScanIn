@@ -121,8 +121,8 @@ class DatabaseAccessor:
         sql = "SELECT COUNT(*) FROM authorized_attendee WHERE PID = %(PID)s AND SID = %(SID)s"
         param = {'PID': PID, 'SID': SID}
         cursor.execute(sql, param)
-        res = cursor.fetchone()
-        return res != None
+        res = cursor.fetchone()[0] > 0
+        return res 
 
     def addAuthorizedPerson(self, PID, SID):
         cursor = self._get_cursor()
