@@ -262,7 +262,17 @@ def _to_history_object(list_of_history_tuple: list):
             'attendee_name': p_name,
             'sid': sid,
             'session_name': s_name,
-            'time': time.isoformat(),
+            'time': _encode_datetime(time),
             'is_in': bool(is_check_in),
         })
     return res
+
+
+def _encode_datetime(val: datetime):
+    if val == None:
+        return None
+    if val.tzinfo == None:
+        val = val.replace(tzinfo=timezone.utc)
+    else:
+        val = val.astimezone(timezone.utc)
+    return val.isoformat()

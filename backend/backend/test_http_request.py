@@ -132,7 +132,7 @@ if __name__ == '__main__':
             'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'}
     # test_login('U1922499K', '12345678')
     # test_get_history_param(auth)
-    t = datetime.fromisoformat('2021-10-17T22:45').astimezone(timezone.utc)
+    t = datetime.fromisoformat('2021-10-17T22:45+08:00')
     # print(t)
     test_get_history(beg=t.isoformat())
     # test_get_attendees()
