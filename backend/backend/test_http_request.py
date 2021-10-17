@@ -1,9 +1,14 @@
+from datetime import datetime
 from urllib.request import Request, urlopen
 import json
 import base64
 
 URL = 'http://104.248.151.223:3002/cz3002/'
 
+ADMIN_AUTH = {
+    'username': 'admin',
+    'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
+}
 
 def send(opName, params={}, auth=None):
     header = {
@@ -42,82 +47,100 @@ def img_to_base64(filename):
     return base64.b64encode(databyte).decode('ascii')
 
 
-def test_login():
+def test_login(username='admin', pwd='password'):
     print(send(
         opName='login',
         params={
-            'username': 'admin',
-            'password': 'password',
+            'username': username,
+            'password': pwd,
         },
         auth=None
     ))
 
 
-def test_get_history():
+def test_get_history_param(auth):
     print(send(
         opName='get_valid_history_param',
         params={},
-        auth={
-            'username': 'admin',
-            'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
-        }
+        auth=auth
     ))
 
 
-def test_get_history():
+def test_get_history(pid=None, sid=None, beg=None, end=None, max_num=10):
     param = {
-        'pid': 'admin',
-        'sid': 4,
-        'beg_time': None,
-        'end_time': None,
-        'max_num': 10,
+        'pid': pid,
+        'sid': sid,
+        'beg_time': beg,
+        'end_time': end,
+        'max_num': max_num,
     }
     print(send(
         opName='get_history',
         params={},
-        auth={
-            'username': 'admin',
-            'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
-        }
+        auth=ADMIN_AUTH
+    ))
+
+def test_add_session(name, venue, beg: datetime, end: datetime, rep, period, unit, attendees):
+    param = {
+        'session_name': name,
+        'venue': venue,
+        'beg_time': beg.isoformat(),
+        'end_time': end.isoformat(),
+        'repeat': rep,
+        'period': period,
+        'period_unit': unit,
+        'attendees': attendees,
+    }
+    print(send(
+        opName='add_session',
+        params=param,
+        auth=ADMIN_AUTH
     ))
 
 
-def test_get_last_history():
-    print('Python dict format:')
+def test_get_last_history(auth, sid):
     print(send(
         opName='get_last_history',
         params={
-            'sid': 4
+            'sid': sid
         },
-        auth={
-            'username': 'admin',
-            'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
-        }
+        auth=auth
+    ))
+
+
+def test_get_last_history(auth, sid):
+    print(send(
+        opName='get_last_history',
+        params={
+            'sid': sid
+        },
+        auth=auth
+    ))
+
+
+def test_get_attendees():
+    print(send(
+        opName='get_attendees',
+        params={},
+        auth=ADMIN_AUTH
     ))
 
 
 if __name__ == '__main__':
-    # print(send(
-    #     opName='login',
-    #     params={
-    #         # 'username': 'admin',
-    #         'password': 'password',
-    #     },
-    #     auth=None
-    # ))
-    # test_login()
-    # test_get_history_param()
-    # test_get_last_history()
-
-    print(send(
-        opName='recognize_face',
-        params={
-            'want_session': False,
-            'face': img_to_base64('C:\\Users\\Temp\\Pictures\\wkt1.jpg')
-        },
-        auth={
-            'username': 'admin',
-            'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
-        }
-    ))
-    # print(img_to_base64('C:\\Users\\Temp\\Pictures\\test.jpg'))
+    auth = {'username': 'U1922499K', 'hashed_password':
+            'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'}
+    test_login('U1922499K', '12345678')
+    # test_get_history_param(auth)
+    # test_get_history()
+    # test_get_attendees()
+    # test_get_last_history(auth, 5)
+    # test_check_in_out(auth, 5)
+    # test_add_session(
+    #     name='Everlasting',
+    #     venue='Earth',
+    #     beg=datetime(2000, 1, 1),
+    #     end=datetime(2100, 1, 1),
+    #     rep=1,
+    #     period=1,
+    #     unit='day',
+    #     attendees=['U1922499K'])
