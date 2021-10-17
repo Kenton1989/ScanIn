@@ -131,10 +131,10 @@ if __name__ == '__main__':
     auth = {'username': 'U1922499K', 'hashed_password':
             'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f'}
     # test_login('U1922499K', '12345678')
-    # test_get_history_param(auth)
-    t = datetime.fromisoformat('2021-10-17T22:45+08:00')
-    # print(t)
-    test_get_history(beg=t.isoformat())
+    test_get_history_param(auth)
+    # end = datetime.fromisoformat('2021-10-17T22:45:30+08:00')
+    # beg = datetime.fromisoformat('2021-10-17T22:44:30+08:00')
+    # test_get_history(beg=beg.isoformat(), end=end.isoformat())
     # test_get_attendees()
     # test_get_last_history(auth, 5)
     # test_check_in_out(auth, 5)
