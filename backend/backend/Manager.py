@@ -112,7 +112,10 @@ class CheckInManager(Manager):
     # return pid
 
     def recognition(self, imageList):
-        recognizedPID = self._recognizer.recognize_face(imageList)
+        try:
+            recognizedPID = self._recognizer.recognize_face(imageList)
+        except FaceRecognizerError as e:
+            raise ManagerError(str(e))
         return recognizedPID
 
     def getCurrentAction(self, PID, SID):

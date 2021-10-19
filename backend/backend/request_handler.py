@@ -295,7 +295,11 @@ def recognized_face_handler(name, auth, param):
     face = parse_image_string(param['face'])
     want_session = bool(param.get('want_session', False))
 
-    pid = check_in_mng.recognition([face])
+    try:
+        pid = check_in_mng.recognition([face])
+    except ManagerError as e:
+        return failed_response(str(e))
+    
     if pid == None:
         if settings.DEBUG:
             filename = save_temp_face(face)
