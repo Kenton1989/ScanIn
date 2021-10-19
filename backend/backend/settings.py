@@ -140,7 +140,7 @@ LOGGING = {
         'level': 'INFO',
     },
     'loggers': {
-        'my_app': {
+        'django': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
         }
