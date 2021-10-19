@@ -71,4 +71,4 @@ class FaceRecognizer:
 
 
 class Hyperparams:
-    TOLERANCE = 0.6
+    TOLERANCE = 0.4
