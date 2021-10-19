@@ -294,10 +294,12 @@ if settings.DEBUG:
     log.info('Unknown face are stored in dir %s', UNKNOWN_FACE_DIR)
 
 def save_temp_face(image: Image.Image):
-    temp = tempfile.NamedTemporaryFile(mode='wb', suffix='.jpg', delete=False)
+    temp = tempfile.NamedTemporaryFile(
+        mode='wb', suffix='.jpg', delete=False, dir=UNKNOWN_FACE_DIR)
     image.save(temp, format='JPEG')
     temp.close()
     return temp.name
+
 
 def recognized_face_handler(name, auth, param):
     face = parse_image_string(param['face'])
@@ -307,11 +309,8 @@ def recognized_face_handler(name, auth, param):
         pid = check_in_mng.recognition([face])
     except ManagerError as e:
         return failed_response(str(e))
-    
+
     if pid == None:
-        if settings.DEBUG:
-            filename = save_temp_face(face)
-            log.info('unknown face saved at %s', filename)
         return failed_response('unknown face')
 
     ret_auth = account_mng.genAuthentication(pid)
