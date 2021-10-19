@@ -92,7 +92,7 @@ def handle_cz3002(request: HttpRequest):
         log.error(
             'Error happend during executing operation: %s with param %s', operation, _limit_str(param))
         traceback.print_exc()
-        response = failed_response()
+        response = failed_response('server internal error')
     log.info('handled operation: %s', operation)
     return response
 
