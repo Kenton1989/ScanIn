@@ -14,7 +14,7 @@ from Manager import *
 from common_json_schema import *
 import tempfile
 
-log = logging.getLogger('Request Handler')
+log = logging.getLogger(__name__)
 
 dbAccessor = DatabaseAccessor()
 face_recognizer = FaceRecognizer(dbAccessor)

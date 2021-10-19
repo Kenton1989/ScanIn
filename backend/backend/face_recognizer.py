@@ -32,7 +32,7 @@ class FaceRecognizer:
         image = numpy.array(raw_images[0])
         unknown_encoding_list = face_recognition.face_encodings(image)
         if len(unknown_encoding_list) <= 0:
-            return None
+            raise FaceRecognizerError('no face detected')
         unknown_encoding = unknown_encoding_list[0]
 
         dist_list = face_recognition.face_distance(
@@ -52,8 +52,8 @@ class FaceRecognizer:
         assert len(raw_images) > 0
         image = numpy.array(raw_images[0])
 
-        resultList = face_recognition.face_encodings(image)
-        if len(resultList) <= 0:
+        result_list = face_recognition.face_encodings(image)
+        if len(result_list) <= 0:
             raise FaceRecognizerError('no face detected')
         self.vectors = numpy.concatenate((self.vectors, [result]), axis=0)
         self.labels.append(pid)
