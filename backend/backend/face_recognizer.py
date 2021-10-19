@@ -26,16 +26,7 @@ class FaceRecognizer:
         self.labels = init_labels
 
     def recognize_face(self, raw_images: List[Image.Image]):
-        assert len(raw_images) > 0
-
-        if len(self.vectors) <= 0:
-            return None
-
-        image = numpy.array(raw_images[0])
-        unknown_encoding_list = face_recognition.face_encodings(image)
-        if len(unknown_encoding_list) <= 0:
-            raise FaceRecognizerError('no face detected')
-        unknown_encoding = unknown_encoding_list[0]
+        unknown_encoding = self._get_1_face_encoding(raw_images)
 
         dist_list = face_recognition.face_distance(
             self.vectors, unknown_encoding)
@@ -44,24 +35,30 @@ class FaceRecognizer:
         min_distance = dist_list[min_idx]
         min_label = self.labels[min_idx]
         min_encoding = self.vectors[min_idx]
-        
-        within_tole = face_recognition.compare_faces(
+
+        within_tolerance = face_recognition.compare_faces(
             [min_encoding], unknown_encoding, tolerance=Hyperparams.TOLERANCE)[0]
-        if not within_tole:
+        if not within_tolerance:
             return None
 
         return min_label
 
     def register_face(self, pid: str, raw_images: List[Image.Image]):
-        assert len(raw_images) > 0
-        image = numpy.array(raw_images[0])
-
-        result_list = face_recognition.face_encodings(image)
-        if len(result_list) <= 0:
-            raise FaceRecognizerError('no face detected')
+        result = self._get_1_face_encoding(raw_images)
         self.vectors = numpy.concatenate((self.vectors, [result]), axis=0)
         self.labels.append(pid)
         self._send_db_register(pid, result)
+    
+    def _get_1_face_encoding(raw_images: List[Image.Image]):
+        if len(raw_images) < 1:
+            raise FaceRecognizerError('no images are given')
+        image = numpy.array(raw_images[0])
+        result_list = face_recognition.face_encodings(image)
+        if len(result_list) <= 0:
+            raise FaceRecognizerError('no face detected')
+        if len(result_list) > 1:
+            raise FaceRecognizerError('more than 1 face detected')
+        return result_list[0]
 
     def _send_db_register(self, pid: str, encoding: numpy.ndarray):
         self.db_accessor.addFacialVector(pid, tuple(encoding))
