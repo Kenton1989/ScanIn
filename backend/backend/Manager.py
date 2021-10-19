@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 from PIL import Image
 import hashlib
 
-from face_recognizer import FaceRecognizer
+from face_recognizer import FaceRecognizer, FaceRecognizerError
 
 
 def get_1st_or_None(row):
@@ -41,7 +41,10 @@ class AccountManager(Manager):
 
         hashedPwd = self._hashPassword(plainPwd)
         self._dbAccessor.registration(PID, name, hashedPwd)
-        self._recognizer.register_face(PID, imageList)
+        try:
+            self._recognizer.register_face(PID, imageList)
+        except FaceRecognizerError as e:
+            raise Manager(str(e))
 
     def disableAccount(self, PID):
         exist = self._dbAccessor.getUserInfo(PID)

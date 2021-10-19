@@ -1,15 +1,18 @@
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from datetime import datetime, timedelta
 import json
 from face_recognizer import FaceRecognizer
 import logging
 import traceback
 import jsonschema
+import os
 from common_request_util import *
 from DatabaseAccessor import DatabaseAccessor
 from Manager import *
 from common_json_schema import *
+import tempfile
 
 log = logging.getLogger('Request Handler')
 
@@ -55,7 +58,7 @@ def handle_cz3002(request: HttpRequest):
         return failed_response()
 
     if not request_json_validator.is_valid(req):
-        log.error('Invlid request structure')
+        log.error('Invalid request structure')
         return failed_response()
 
     operation = req['operation']
@@ -68,6 +71,7 @@ def handle_cz3002(request: HttpRequest):
 
     if NEED_AUTH[operation]:
         if auth == None:
+            log.error('require authentication object')
             return failed_response()
 
         if not account_mng.verifyAuthentication(auth):
@@ -81,7 +85,7 @@ def handle_cz3002(request: HttpRequest):
             'Error happend during executing operation: %s with param %s', operation, str(param))
         traceback.print_exc()
         response = failed_response()
-
+    log.info('handled operation: %s', operation)
     return response
 
 
@@ -276,6 +280,16 @@ register_handler(
     need_auth=False,
     handler=register_user_handler)
 
+UNKNOWN_FACE_DIR = os.path.abspath('./unknown_face/')
+if settings.DEBUG:
+    os.makedirs(UNKNOWN_FACE_DIR, exist_ok=True)
+    log.info('Unknown face are stored in dir %s', UNKNOWN_FACE_DIR)
+
+def save_temp_face(image: Image.Image):
+    temp = tempfile.NamedTemporaryFile(mode='wb', suffix='.jpg', delete=False)
+    image.save(temp, format='JPEG')
+    temp.close()
+    return temp.name
 
 def recognized_face_handler(name, auth, param):
     face = parse_image_string(param['face'])
@@ -283,6 +297,9 @@ def recognized_face_handler(name, auth, param):
 
     pid = check_in_mng.recognition([face])
     if pid == None:
+        if settings.DEBUG:
+            filename = save_temp_face(face)
+            log.info('unknown face saved at %s', filename)
         return failed_response('unknown face')
 
     ret_auth = account_mng.genAuthentication(pid)

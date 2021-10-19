@@ -5,6 +5,8 @@ from DatabaseAccessor import DatabaseAccessor
 from typing import List, Dict
 from PIL import Image
 
+class FaceRecognizerError(Exception):
+    pass
 
 class FaceRecognizer:
     def __init__(self, db_accessor: DatabaseAccessor):
@@ -50,10 +52,11 @@ class FaceRecognizer:
         assert len(raw_images) > 0
         image = numpy.array(raw_images[0])
 
-        result = face_recognition.face_encodings(image)[0]
+        resultList = face_recognition.face_encodings(image)
+        if len(resultList) <= 0:
+            raise FaceRecognizerError('no face detected')
         self.vectors = numpy.concatenate((self.vectors, [result]), axis=0)
         self.labels.append(pid)
-
         self._send_db_register(pid, result)
 
     def _send_db_register(self, pid: str, encoding: numpy.ndarray):

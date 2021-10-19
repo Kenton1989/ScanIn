@@ -18,6 +18,7 @@ def success_response(returnVal={}):
 
 def failed_response(errMsg='invalid request'):
     assert isinstance(errMsg, str)
+    log.error('request failed: %s', errMsg)
     res = {
         'success': False,
         'details': errMsg,
