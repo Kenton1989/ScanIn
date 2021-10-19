@@ -49,7 +49,7 @@ class FaceRecognizer:
         self.labels.append(pid)
         self._send_db_register(pid, result)
     
-    def _get_1_face_encoding(raw_images: List[Image.Image]):
+    def _get_1_face_encoding(self, raw_images: List[Image.Image]):
         if len(raw_images) < 1:
             raise FaceRecognizerError('no images are given')
         image = numpy.array(raw_images[0])
