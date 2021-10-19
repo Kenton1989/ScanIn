@@ -40,12 +40,12 @@ public class HistoryAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view=View.inflate(context,R.layout.record_list_item,null);
-        TextView sid=view.findViewById(R.id.sid);
-        TextView pid=view.findViewById(R.id.pid);
+        TextView sid=view.findViewById(R.id.record_sid);
+        TextView pid=view.findViewById(R.id.record_pid);
         TextView time=view.findViewById(R.id.time);
 
         History record=(History) getItem(position);
-        sid.setText(record.getSid());
+        sid.setText(String.valueOf(record.getSid()));
         pid.setText(record.getPid());
         time.setText(record.getTime());
         return view;

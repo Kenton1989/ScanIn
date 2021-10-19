@@ -3,19 +3,15 @@ package com.example.scanln;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
-import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
@@ -38,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,10 +43,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-public class CheckInFragment extends Fragment {
+public class CheckInFragment extends Fragment implements FaceDetectionCallback{
     private FragmentCheckinBinding binding;
     private Bitmap cur;
     private ExecutorService cameraExecutor;
@@ -58,6 +54,8 @@ public class CheckInFragment extends Fragment {
     private FaceDetectorProcessor analyser;
     private ProcessCameraProvider cameraProvider;
     private CheckinViewModel model;
+    private LocalDateTime allowDetectionTime=LocalDateTime.MIN;
+    private static final Duration detectionTimeGap=Duration.ofMillis(300);
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater,
                              ViewGroup container,
@@ -80,10 +78,6 @@ public class CheckInFragment extends Fragment {
                 Navigation.findNavController(view).navigate(action);
             }
         });
-        while(!valid&&cur!=null){
-            cur=analyser.getResult();
-            recognizeFace();
-        }
 
     }
 
@@ -100,7 +94,7 @@ public class CheckInFragment extends Fragment {
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build();
 
-            analyser=new FaceDetectorProcessor(new ImageUtils(),requireContext());
+            analyser=new FaceDetectorProcessor(requireContext(),this);
 
             analysis.setAnalyzer(cameraExecutor,analyser);
             try {
@@ -129,15 +123,19 @@ public class CheckInFragment extends Fragment {
         String operation=VRequestQueue.RECOGNIZE_FACE;
         Response.Listener<JSONObject> listener= response -> {
             if(response.optBoolean(VRequestQueue.RESULT_PARAM)){
-                onSuccess(response);
+                onRecogniseSuccess(response);
+            }
+            else{
+                Log.w("login result",response.toString());
             }
         };
         Response.ErrorListener errorListener= this::onRequestError;
         VRequestQueue.getInstance(requireContext()).createRequest(params,operation,auth,listener,errorListener);
     }
 
-    private void onSuccess(JSONObject response){
+    private void onRecogniseSuccess(JSONObject response){
         valid=true;
+        Log.w("login result",response.toString());
         try{
             JSONObject returns=response.getJSONObject(VRequestQueue.RETURN);
             JSONObject userInfo=returns.getJSONObject("user");
@@ -156,6 +154,7 @@ public class CheckInFragment extends Fragment {
             model.setRecords(sessionBriefs);
             cameraProvider.unbindAll();
             cameraExecutor.shutdown();
+            cur=null;
             NavDirections action=CheckInFragmentDirections.actionNavigationCheckinToNavigationCheckinConfirm();
             Navigation.findNavController(requireView()).navigate(action);
         } catch (Exception e){
@@ -173,4 +172,15 @@ public class CheckInFragment extends Fragment {
         builder.show();
     }
 
+
+    @Override
+    public void onSccess(Bitmap result) {
+        LocalDateTime now=LocalDateTime.now();
+        Log.w("onSuccess",now.toString()+" "+allowDetectionTime.toString());
+        if(now.compareTo(allowDetectionTime)>=0&&result!=null){
+            cur=result;
+            recognizeFace();
+            allowDetectionTime=now.plus(detectionTimeGap);
+        }
+    }
 }

@@ -78,7 +78,7 @@ public class SearchSessionHistoryFragment extends Fragment {
                                 String s=String.format("%2s/%2s/%4s",dayOfMonth,month,year);
                                 binding.from.setText(s);
                                 start_day=dayOfMonth;
-                                start_month=month;
+                                start_month=month+1;
                                 start_year=year;
                             }
                         },
@@ -100,7 +100,7 @@ public class SearchSessionHistoryFragment extends Fragment {
                                 String s=String.format("%2s/%2s/%4s",dayOfMonth,month,year);
                                 binding.to.setText(s);
                                 end_day=dayOfMonth;
-                                end_month=month;
+                                end_month=month+1;
                                 end_year=year;
                             }
                         },

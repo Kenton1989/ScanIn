@@ -9,7 +9,7 @@
     android:layout_marginRight="16dp">
 
     <TextView
-        android:id="@+id/student_id"
+        android:id="@+id/check_in_time"
         android:layout_width="100dp"
         android:layout_height="18dp"
         android:layout_marginStart="10dp"
@@ -20,28 +20,15 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description7" />
+        app:layout_constraintTop_toBottomOf="@+id/person_id" />
 
     <TextView
         android:id="@+id/session_id"
         android:layout_width="98dp"
         android:layout_height="21dp"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="10dp"
-        android:text="Session ID:"
-        android:textColor="#664A99"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/pid"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/description7"
-        android:layout_width="78dp"
-        android:layout_height="23dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="Person ID:"
+        android:text="Session ID:"
         android:textColor="#664A99"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -49,20 +36,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/sid"
+        android:id="@+id/person_id"
+        android:layout_width="78dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Person ID:"
+        android:textColor="#664A99"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/record_sid"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/record_sid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="13dp"
         android:text="123"
         android:textColor="#A3A1A1"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/session_id"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/pid"
+        android:id="@+id/record_pid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -70,14 +69,14 @@
         android:textColor="#A3A1A1"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/description7"
+        app:layout_constraintStart_toEndOf="@+id/person_id"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="141dp"
         android:layout_height="21dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="10dp"
         android:text="123"
@@ -85,7 +84,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/student_id"
+        app:layout_constraintStart_toEndOf="@+id/check_in_time"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

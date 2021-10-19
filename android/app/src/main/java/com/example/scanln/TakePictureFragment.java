@@ -1,6 +1,7 @@
 package com.example.scanln;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -44,7 +45,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TakePictureFragment extends Fragment{
+public class TakePictureFragment extends Fragment implements FaceDetectionCallback{
     private RegisterViewModel model;
     private Bitmap cur;
     private ExecutorService cameraExecutor;
@@ -71,14 +72,15 @@ public class TakePictureFragment extends Fragment{
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
         model=new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        binding.hint.setText("Click the camera icon when you are ready.");
         setUpCamera();
         binding.takePictureBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
                 capture();
             }
         });
+
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,9 +102,7 @@ public class TakePictureFragment extends Fragment{
                 Navigation.findNavController(view).navigate(action);
             }
         });
-
-        binding.nextBtn.setActivated(false);
-
+        binding.nextBtn.setEnabled(false);
     }
 
     private void setUpCamera(){
@@ -114,7 +114,7 @@ public class TakePictureFragment extends Fragment{
                     .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();
             System.out.println("imagecapture ready");
             ImageAnalysis analysis=new ImageAnalysis.Builder().build();
-            analyser=new FaceDetectorProcessor(new ImageUtils(),requireContext());
+            analyser=new FaceDetectorProcessor(requireContext(),this);
 
             analysis.setAnalyzer(cameraExecutor,analyser);
             preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
@@ -142,7 +142,8 @@ public class TakePictureFragment extends Fragment{
                     @Override
                     public void onCaptureSuccess(@NonNull ImageProxy image) {
                         super.onCaptureSuccess(image);
-                        checkPicture();
+                        checkPicture(image);
+
                     }
 
                     @Override
@@ -150,15 +151,27 @@ public class TakePictureFragment extends Fragment{
                         super.onError(exception);
                     }
                 });
+        if(cur!=null){
+            binding.nextBtn.setEnabled(true);
+            binding.hint.setText("Picture taken successfully, click next to continue.");
+        }
+
     }
 
-    private void checkPicture(){
+    @SuppressLint("UnsafeOptInUsageError")
+    private boolean checkPicture(ImageProxy image){
         Bitmap face=analyser.getResult();
-        Log.d("check picture", String.valueOf(face==null));
+        if(face==null) return false;
+        cur=face;
         model.setFront(face);
         model.setString_front(ImageUtils.getJPEGString(face));
-        binding.nextBtn.setActivated(true);
-        binding.hint.setText("Picture taken successfully, click next to continue.");
+        Log.d("check picture", String.valueOf(face==null));
+        return true;
+
     }
 
+    @Override
+    public void onSccess(Bitmap bitmap) {
+
+    }
 }

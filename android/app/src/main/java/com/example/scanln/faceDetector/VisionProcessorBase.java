@@ -11,26 +11,30 @@ import androidx.annotation.Nullable;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
+import com.example.scanln.FaceDetectionCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public abstract class VisionProcessorBase<T> implements ImageAnalysis.Analyzer{
 
-    public ImageUtils generator;
     public Context context;
     public Bitmap result;
+    public FaceDetectionCallback callback;
 
-    public VisionProcessorBase(ImageUtils generator, Context context){
+    public VisionProcessorBase(Context context, FaceDetectionCallback callback){
         this.context=context;
-        this.generator=generator;
+        this.callback=callback;
     }
 
     @Override
     public void analyze(ImageProxy imageProxy){
+        LocalDateTime now=LocalDateTime.now();
         @SuppressLint("UnsafeOptInUsageError")
         Image mediaImage=imageProxy.getImage();
         Task<T> task=detectImage(InputImage.

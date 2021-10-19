@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.camera.core.ImageProxy;
 
+import com.example.scanln.FaceDetectionCallback;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.face.Face;
@@ -14,6 +15,8 @@ import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>>{
@@ -22,9 +25,11 @@ public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>>{
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_NONE)
             .build();
+
     private FaceDetector detector= FaceDetection.getClient(realTimeOpts);
-    public FaceDetectorProcessor(ImageUtils generator, Context context) {
-        super(generator,context);
+
+    public FaceDetectorProcessor(Context context, FaceDetectionCallback callback) {
+        super(context,callback);
     }
 
     @Override
@@ -36,7 +41,8 @@ public class FaceDetectorProcessor extends VisionProcessorBase<List<Face>>{
     public void onSuccess(List<Face> result, ImageProxy image) {
         if(result.size()==1){
             Face face=result.get(0);
-            this.result=generator.crop(image,face.getBoundingBox(),context);
+            this.result=ImageUtils.crop(image,face.getBoundingBox(),context);
+            callback.onSccess(this.result);
         }
     }
 

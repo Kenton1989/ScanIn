@@ -57,8 +57,8 @@ public class AddSessionFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
-        getAttendees();
         model= new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
+        getAttendees();
         ArrayAdapter<CharSequence> adapter=ArrayAdapter
                 .createFromResource(getContext(),
                         R.array.repeat_num_array,
@@ -91,7 +91,7 @@ public class AddSessionFragment extends Fragment {
                                 String s=String.format("%2s/%2s/%4s",dayOfMonth,month,year);
                                 binding.sessionStart.setText(s);
                                 start_day=dayOfMonth;
-                                start_month=month;
+                                start_month=month+1;
                                 start_year=year;
                             }
                         },
@@ -113,7 +113,7 @@ public class AddSessionFragment extends Fragment {
                                 String s=String.format("%2s/%2s/%4s",dayOfMonth,month,year);
                                 binding.sessionEnd.setText(s);
                                 end_day=dayOfMonth;
-                                end_month=month;
+                                end_month=month+1;
                                 end_year=year;
                             }
                         },

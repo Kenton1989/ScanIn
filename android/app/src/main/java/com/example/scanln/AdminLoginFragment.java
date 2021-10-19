@@ -108,7 +108,7 @@ public class AdminLoginFragment extends Fragment {
     private void onSuccess(JSONObject response){
         JSONObject auth=response.optJSONObject(VRequestQueue.RETURN)
                 .optJSONObject(VRequestQueue.AUTHENTICATION_OBJECT);
-       model.setAuth(auth);
+        model.setAuth(auth);
         NavDirections action=AdminLoginFragmentDirections.actionNavigationAdminLoginToNavigationAdminMenu();
         Navigation.findNavController(getView()).navigate(action);
     }

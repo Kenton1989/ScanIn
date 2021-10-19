@@ -60,7 +60,12 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void setString_front(String s){
-        string_front.setValue(s);
+        try{
+            string_front.setValue(s);
+        }catch (Exception e){
+            this.string_front.postValue(s);
+        }
+
     }
 
     public void clear(){

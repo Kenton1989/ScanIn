@@ -53,7 +53,8 @@ public class CheckinConfirmFragment extends Fragment {
         binding.action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                checkInOut();
+                if(validateInput())
+                    checkInOut();
             }
         });
         binding.retake.setOnClickListener(new View.OnClickListener() {
@@ -134,5 +135,16 @@ public class CheckinConfirmFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
         builder.show();
+    }
+    private boolean validateInput(){
+        if(selected!=null)
+            return true;
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("Cannot perform action")
+                .setMessage("You have not selected any session")
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+        builder.show();
+        return false;
     }
 }

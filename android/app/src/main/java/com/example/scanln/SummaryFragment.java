@@ -47,10 +47,7 @@ public class SummaryFragment extends Fragment {
         binding.idTxt.setText(model.getId());
         binding.nameTxt.setText(model.getName());
         Bitmap bitmap=model.getFront().getValue();
-        Matrix matrix=new Matrix();
-        matrix.postRotate(270);
-        bitmap=Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),
-                bitmap.getHeight(),matrix,true);
+
         binding.retakeCenter.setImageBitmap(bitmap);
         binding.retakeCenter.setOnClickListener(new View.OnClickListener() {
             @Override

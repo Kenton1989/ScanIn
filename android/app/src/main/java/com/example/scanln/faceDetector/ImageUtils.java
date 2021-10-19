@@ -3,6 +3,7 @@ package com.example.scanln.faceDetector;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.media.Image;
 import android.renderscript.Allocation;
@@ -11,6 +12,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicYuvToRGB;
 import android.renderscript.Type;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
@@ -22,7 +24,7 @@ import java.nio.ByteBuffer;
 
 public class ImageUtils {
 
-    public Bitmap crop(ImageProxy proxy, Rect rect, Context context){
+    public static Bitmap crop(ImageProxy proxy, Rect rect, Context context){
         @SuppressLint("UnsafeOptInUsageError")
         Image image=proxy.getImage();
         Bitmap bitmap=yuv420ToBitmap(image,context);
@@ -30,9 +32,20 @@ public class ImageUtils {
         //System.out.println(proxy.getCropRect());
         //System.out.println(bitmap.getHeight()+" "+bitmap.getWidth());
         //System.out.println(rect.left+" "+rect.top+" "+rect.width()+" "+rect.height());
-        Bitmap cropped=Bitmap.createBitmap(bitmap,rect.top,rect.left,rect.height(),rect.width());
+        //Log.d("crop",rect.toString());
+        Matrix matrix=new Matrix();
+        matrix.postRotate(270);
+        bitmap=Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),
+                bitmap.getHeight(),matrix,true);
+        Bitmap cropped=null;
+        try{
+            cropped=Bitmap.createBitmap(bitmap,rect.top,rect.left,rect.height(),rect.width());
+        } catch (IllegalArgumentException e){
+            return null;
+        }
+        //Bitmap cropped=Bitmap.createBitmap(bitmap,rect.top,rect.left,rect.height(),rect.width());
         //System.out.println(cropped.getHeight()+" "+cropped.getWidth());
-        return cropped;
+        return bitmap;
     }
 
     public static Bitmap yuv420ToBitmap(Image image, Context context){
