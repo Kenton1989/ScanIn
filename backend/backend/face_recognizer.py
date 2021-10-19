@@ -5,8 +5,10 @@ from DatabaseAccessor import DatabaseAccessor
 from typing import List, Dict
 from PIL import Image
 
+
 class FaceRecognizerError(Exception):
     pass
+
 
 class FaceRecognizer:
     def __init__(self, db_accessor: DatabaseAccessor):
@@ -42,8 +44,10 @@ class FaceRecognizer:
         min_distance = dist_list[min_idx]
         min_label = self.labels[min_idx]
         min_encoding = self.vectors[min_idx]
-
-        if min_distance >= Hyperparams.TOLERANCE:
+        
+        within_tole = face_recognition.compare_faces(
+            [min_encoding], unknown_encoding, tolerance=Hyperparams.TOLERANCE)[0]
+        if not within_tole:
             return None
 
         return min_label
