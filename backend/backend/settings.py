@@ -135,12 +135,12 @@ LOGGING = {
             'formatter': 'simple'
         },
     },
-    'root': {
-        'handlers': ['console', 'file'],
-        'level': 'INFO',
-    },
     'loggers': {
         'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'my_app': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
         }
