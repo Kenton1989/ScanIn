@@ -45,6 +45,14 @@ def _default_handler(op_name, auth, param):
     return failed_response('unknown operation: ' + op_name)
 
 
+def _limit_str(obj, max_len=50):
+    msg = str(obj)
+    if len(msg) <= max_len:
+        return msg
+    else:
+        return msg[:max_len] + '...'
+
+
 @csrf_exempt
 def handle_cz3002(request: HttpRequest):
     if request.method != 'POST':
@@ -82,7 +90,7 @@ def handle_cz3002(request: HttpRequest):
         response = handler(operation, auth, param)
     except:
         log.error(
-            'Error happend during executing operation: %s with param %s', operation, str(param))
+            'Error happend during executing operation: %s with param %s', operation, _limit_str(param))
         traceback.print_exc()
         response = failed_response()
     log.info('handled operation: %s', operation)
