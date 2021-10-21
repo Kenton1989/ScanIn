@@ -243,9 +243,11 @@ public class AddSessionFragment extends Fragment {
         String period_unit=binding.sessionFreqSpin.getSelectedItem().toString();
         List<String> attendees=new ArrayList<>();
         SparseBooleanArray checked=binding.attendanceList.getCheckedItemPositions();
-        for (int i=0;i<userInfos.size();i++){
-            if(checked.valueAt(i))
-                attendees.add(userInfos.get((int)i).getPid());
+        for (int i=0;i<checked.size();i++){
+            if(checked.valueAt(i)) {
+                int idx = checked.keyAt(i);
+                attendees.add(userInfos.get(idx).getPid());
+            }
         }
         params.put("session_name",session_name);
         params.put("venue",venue);
