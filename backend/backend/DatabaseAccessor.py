@@ -235,7 +235,7 @@ class DatabaseAccessor:
 
         if currentTime == None:
             currentTime = datetime.now()
-        sql = "SELECT s.SID, s.session_name, s.start_time, s.end_time FROM session_info s JOIN authorized_attendee a ON s.SID = a.SID WHERE PID = %(PID)s AND start_time >= %(cTime)s AND end_time <= %(cTime)s"
+        sql = "SELECT s.SID, s.session_name, s.start_time, s.end_time FROM session_info s JOIN authorized_attendee a ON s.SID = a.SID WHERE a.PID = %(PID)s AND s.start_time <= %(cTime)s AND s.end_time >= %(cTime)s"
         param = {'PID': PID, 'cTime': currentTime}
         cursor.execute(sql, param)
         result = tuple(cursor)

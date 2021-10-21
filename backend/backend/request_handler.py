@@ -365,7 +365,10 @@ register_handler(
 def check_in_out_handler(name, auth, param):
     sid = param['sid']
     pid = account_mng.getPidFromAuth(auth)
-    res = check_in_mng.checkIn(pid, sid)
+    try:
+        res = check_in_mng.checkIn(pid, sid)
+    except ManagerError as e:
+        return failed_response(str(e))
     if res == None:
         return failed_response()
     else:

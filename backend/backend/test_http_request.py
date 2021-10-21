@@ -11,6 +11,13 @@ ADMIN_AUTH = {
     'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
 }
 
+def limit_str(obj, limit = 500):
+    s = str(obj)
+    if len(s) <= limit:
+        return s
+    else:
+        return s[:limit] + ' ...'
+
 def send(opName, params={}, auth=None):
     header = {
         'Content-Type': 'application/json'
@@ -22,13 +29,14 @@ def send(opName, params={}, auth=None):
         'param': params,
     }
 
-    data_byte = json.dumps(data).encode('utf8')
+    data_str = json.dumps(data)
+    data_byte = data_str.encode('utf8')
     print('Sending')
     print('URL:', URL)
     print('Method:', 'POST')
     print('Content-Type:', 'application/json')
     print('Body:')
-    print(data_byte)
+    print(limit_str(data_str))
     print()
     req = Request(URL, data_byte, headers=header, method='POST')
 
@@ -119,11 +127,11 @@ def test_check_in_out(auth, sid):
     ))
 
 
-def test_get_attendees():
+def test_get_attendees(auth=ADMIN_AUTH):
     print(send(
         opName='get_attendees',
         params={},
-        auth=ADMIN_AUTH
+        auth=auth
     ))
 
 
@@ -134,10 +142,10 @@ if __name__ == '__main__':
     # test_get_history_param(ADMIN_AUTH)
     # end = datetime.fromisoformat('2021-10-17T22:45:30+08:00')
     # beg = datetime.fromisoformat('2021-10-17T22:44:30+08:00')
-    # test_get_history(beg=beg.isoformat(), end=end.isoformat())
-    # test_get_attendees()
+    # test_get_history(sid=4)
+    # test_get_attendees(ADMIN_AUTH)
     # test_get_last_history(auth, 5)
-    test_check_in_out(auth, 4)
+    # test_check_in_out(auth, 4)
     # test_add_session(
     #     name='Everlasting',
     #     venue='Earth',
@@ -147,3 +155,11 @@ if __name__ == '__main__':
     #     period=1,
     #     unit='day',
     #     attendees=['U1922499K'])
+    send(
+        opName='recognize_face',
+        params={
+            'face': img_to_base64('C:\\Users\\kento\\Pictures\\wkt2.jpg'),
+            'want_session': True
+        },
+        auth=None
+    )

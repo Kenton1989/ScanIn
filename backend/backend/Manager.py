@@ -129,9 +129,9 @@ class CheckInManager(Manager):
     def checkIn(self, PID, SID):
         """Check in and return the newly created history. If error happens, return None"""
         if not self._dbAccessor.isAuthorizedPerson(PID, SID):
-            return None
+            raise ManagerError('user is not in the session')
         if not self._dbAccessor.takeAttendance(PID, SID):
-            return None
+            raise ManagerError('new history not created')
         res = _to_history_object(
             self._dbAccessor.getAttendance(PID, SID, limit=1))
         return get_1st_or_None(res)
