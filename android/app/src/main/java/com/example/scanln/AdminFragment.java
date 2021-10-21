@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -46,6 +47,16 @@ public class AdminFragment extends Fragment {
                 NavDirections action=AdminFragmentDirections
                         .actionNavigationAdminMenuToNavigationSearchRecord();
                 Navigation.findNavController(view).navigate(action);
+            }
+        });
+
+        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                NavDirections action=AdminFragmentDirections.actionNavigationAdminMenuToNavigationMainMenu();
+                Navigation.findNavController(view).navigate(action);
+                AdminViewModel model=new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
+                model.clear();
             }
         });
     }

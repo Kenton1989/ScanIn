@@ -32,4 +32,10 @@ public class AdminViewModel extends ViewModel {
     public JSONObject getAuth(){
         return auth.getValue();
     }
+
+    public void clear(){
+        user.setValue(null);
+        pwd.setValue(null);
+        auth.setValue(null);
+    }
 }

@@ -3,6 +3,14 @@ package com.example.scanln.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class History {
     private int id;
     private String pid;
@@ -84,7 +92,17 @@ public class History {
         this.name=json.getString("attendee_name");
         this.sid=json.getInt("sid");
         this.sessionName=json.getString("session_name");
-        this.time=json.getString("time");
+        String iso_time=json.getString("time");
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.ENGLISH);
+        sdfOutput.setTimeZone(TimeZone.getTimeZone("CTT"));
+        try{
+            Date date = sdfInput.parse(iso_time);
+            this.time=sdfOutput.format(date);
+        }catch(Exception e){
+            System.out.println(e.toString());
+
+        }
         this.isIn=json.getBoolean("is_in");
     }
 }

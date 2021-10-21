@@ -9,6 +9,7 @@ public class SessionBrief {
     private String beg_time;
     private String end_time;
 
+    public SessionBrief(){}
     public SessionBrief(int sid, String sname, String beg_time, String end_time) {
         this.sid = sid;
         this.sname = sname;
@@ -56,6 +57,6 @@ public class SessionBrief {
 
     @Override
     public String toString(){
-        return sname;
+        return (sname!=null)?sname:"-";
     }
 }

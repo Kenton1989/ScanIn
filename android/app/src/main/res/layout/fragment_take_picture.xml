@@ -22,7 +22,10 @@
 
         android:layout_marginStart="88dp"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_btn_round"
+        android:fontFamily="@font/nunito_bold"
         android:text="Next"
+        app:backgroundTint="@color/saturate_confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/back_btn" />
 
@@ -33,7 +36,10 @@
 
         android:layout_marginStart="60dp"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_btn_round"
+        android:fontFamily="@font/nunito_bold"
         android:text="Back"
+        app:backgroundTint="@color/saturate_reject"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -46,7 +52,8 @@
         android:background="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/back_btn"
-        app:rippleColor="@color/design_default_color_background" />
+        app:rippleColor="@color/design_default_color_background"
+        app:backgroundTint="@color/black"/>
 
     <TextView
         android:id="@+id/hint"
@@ -56,6 +63,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="100dp"
+        android:fontFamily="@font/opensans_regular"
         android:text="Hint:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

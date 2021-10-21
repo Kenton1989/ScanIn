@@ -2,14 +2,18 @@ package com.example.scanln;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,7 +44,7 @@ import static android.widget.AbsListView.CHOICE_MODE_MULTIPLE;
 public class AddSessionFragment extends Fragment {
     private FragmentAddSessionBinding binding;
     private int start_day,start_month,start_year;
-    private int end_day,end_month,end_year;
+    private int start_h,start_min,end_h,end_min;
     private List<UserInfo> userInfos=new ArrayList<>();
     private AdminViewModel model;
     public AddSessionFragment(){
@@ -102,27 +106,47 @@ public class AddSessionFragment extends Fragment {
             }
         });
 
-        binding.sessionEnd.setOnClickListener(new View.OnClickListener() {
+        binding.startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Calendar cal=Calendar.getInstance();
-                DatePickerDialog dialog=new DatePickerDialog(requireParentFragment().requireContext(),
-                        new DatePickerDialog.OnDateSetListener() {
+                TimePickerDialog dialog = new TimePickerDialog(requireParentFragment().requireContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
                             @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                String s=String.format("%2s/%2s/%4s",dayOfMonth,month,year);
-                                binding.sessionEnd.setText(s);
-                                end_day=dayOfMonth;
-                                end_month=month+1;
-                                end_year=year;
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                String s = String.format("%2s:%2s", hourOfDay, minute);
+                                binding.startTime.setText(s);
+                                start_h = hourOfDay;
+                                start_min = minute;
                             }
                         },
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH),
-                        cal.get(Calendar.DAY_OF_MONTH));
+                        cal.get(Calendar.HOUR_OF_DAY),
+                        cal.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(requireActivity().getApplicationContext()));
                 dialog.show();
             }
         });
+        binding.endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Calendar cal=Calendar.getInstance();
+                TimePickerDialog dialog = new TimePickerDialog(requireParentFragment().requireContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                String s = String.format("%2s:%2s", hourOfDay, minute);
+                                binding.endTime.setText(s);
+                                end_h = hourOfDay;
+                                end_min = minute;
+                            }
+                        },
+                        cal.get(Calendar.HOUR_OF_DAY),
+                        cal.get(Calendar.MINUTE),
+                        DateFormat.is24HourFormat(requireActivity().getApplicationContext()));
+                dialog.show();
+            }
+        });
+
         binding.addSessionCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,18 +237,20 @@ public class AddSessionFragment extends Fragment {
         String session_name=binding.sessionNameTxt.getText().toString();
         String venue=binding.sessionVenueTxt.getText().toString();
         DateTimeFormatter dtf =  DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-        LocalDateTime start=LocalDateTime.of(start_year,start_month,start_day,0,0);
+        LocalDateTime start=LocalDateTime.of(start_year,start_month,start_day,start_h,start_min);
         ZonedDateTime iso_start=ZonedDateTime.of(start, ZoneId.systemDefault());
         String beg_time=iso_start.format(dtf);
-        LocalDateTime end=LocalDateTime.of(end_year,end_month,end_day,0,0);
+        LocalDateTime end=LocalDateTime.of(start_year,start_month,start_day,end_h,end_min);
         ZonedDateTime iso_end=ZonedDateTime.of(end,ZoneId.systemDefault());
         String end_time=iso_end.format(dtf);
         int repeat=Integer.parseInt(binding.sessionRepeatNum.getText().toString());
         int period=binding.sessionNumSpin.getSelectedItemPosition()+1;
         String period_unit=binding.sessionFreqSpin.getSelectedItem().toString();
         List<String> attendees=new ArrayList<>();
-        for (long i:binding.attendanceList.getCheckedItemIds()){
-            attendees.add(userInfos.get((int)i).getPid());
+        SparseBooleanArray checked=binding.attendanceList.getCheckedItemPositions();
+        for (int i=0;i<userInfos.size();i++){
+            if(checked.valueAt(i))
+                attendees.add(userInfos.get((int)i).getPid());
         }
         params.put("session_name",session_name);
         params.put("venue",venue);
@@ -249,7 +275,7 @@ public class AddSessionFragment extends Fragment {
     private void onSessionAdded(JSONObject response){
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         builder.setTitle("Added Session")
-                .setMessage("Session added successfully, click back to go back to main menu, "+
+                .setMessage("Session added successfully, click BACK to go back to main menu, "+
                         "click CONTINUE to add a new one")
                 .setCancelable(false)
                 .setPositiveButton("CONTINUE", (dialog, which) -> {
@@ -273,11 +299,12 @@ public class AddSessionFragment extends Fragment {
     }
     private void clearText(){
         binding.sessionNameTxt.setText("");
-        binding.sessionStart.setText("FROM");
-        binding.sessionEnd.setText("TO");
+        binding.sessionStart.setText("START DATE");
+        binding.endTime.setText("TO");
+        binding.startTime.setText("FROM");
         binding.sessionRepeatNum.setText("");
         binding.sessionVenueTxt.setText("");
         start_day=0;start_month=0;start_year=0;
-        end_day=0;end_month=0;end_year=0;
+        start_h=0;start_min=0;end_h=0;end_min=0;
     }
 }

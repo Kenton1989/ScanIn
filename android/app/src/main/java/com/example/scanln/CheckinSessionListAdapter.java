@@ -41,9 +41,9 @@ public class CheckinSessionListAdapter extends BaseAdapter{
         View view=View.inflate(context,R.layout.session_list_item,null);
         TextView name=view.findViewById(R.id.sidtxt);
         TextView num=view.findViewById(R.id.snametxt);
-        History session=(History) getItem(position);
-        name.setText(session.getName());
-        name.setText(Integer.toString(session.getSid()));
-        return null;
+        SessionBrief session=(SessionBrief) getItem(position);
+        name.setText(session.getSname());
+        num.setText(Integer.toString(session.getSid()));
+        return view;
     }
 }

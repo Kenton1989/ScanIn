@@ -7,28 +7,59 @@
         android:layout_height="match_parent"
         tools:context=".AdminFragment">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="113dp"
-            android:layout_marginTop="187dp"
-            android:layout_marginEnd="118dp"
-            android:text="Add Session"
-            app:layout_constraintEnd_toEndOf="parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/history_btn"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="113dp"
-            android:layout_marginTop="23dp"
-            android:layout_marginEnd="118dp"
-            android:text="Session History"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_bold"
+                android:gravity="center"
+                android:text="Welcome!"
+                android:textColor="#57977A"
+                android:textSize="30dp" />
+
+            <ImageView
+                android:layout_width="400dp"
+                android:layout_height="350dp"
+                android:background="@drawable/admin_home" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Add Session"
+                app:backgroundTint="@color/saturate_confirm" />
+
+            <Button
+                android:id="@+id/history_btn"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Session History"
+                app:backgroundTint="@color/saturate_confirm" />
+
+            <Button
+                android:id="@+id/logout_btn"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Logout"
+                app:backgroundTint="@color/saturate_reject" />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -149,15 +149,17 @@ public class SearchSessionHistoryFragment extends Fragment {
         Map<String,Object> params=new HashMap<>();
         String operation=VRequestQueue.GET_HISTORY;
         int sid;
-        if(binding.sessionSpin.getSelectedItemPosition()!= AdapterView.INVALID_POSITION){
-            sid=sessionBriefs.get(binding.sessionSpin.getSelectedItemPosition()).getSid();
+        int sid_pos=binding.sessionSpin.getSelectedItemPosition();
+        if(sid_pos!= AdapterView.INVALID_POSITION&&sid_pos!=0){
+            sid=sessionBriefs.get(sid_pos).getSid();
             params.put("sid",sid);
         }
         else params.put("sid",null);
 
         String pid;
-        if(binding.studentSpin.getSelectedItemPosition()!=AdapterView.INVALID_POSITION){
-            pid=userInfos.get(binding.studentSpin.getSelectedItemPosition()).getPid();
+        int pid_pos=binding.studentSpin.getSelectedItemPosition();
+        if(pid_pos!=AdapterView.INVALID_POSITION&&pid_pos!=0){
+            pid=userInfos.get(pid_pos).getPid();
             params.put("pid",pid);
         }
         else params.put("pid",null);
@@ -263,6 +265,7 @@ public class SearchSessionHistoryFragment extends Fragment {
         builder.show();
     }
     private void setStudentSpin(){
+        userInfos.add(0,new UserInfo());
         ArrayAdapter<UserInfo> student_adapter=new ArrayAdapter<>(
                 getContext(),
                 android.R.layout.simple_spinner_item,
@@ -272,6 +275,7 @@ public class SearchSessionHistoryFragment extends Fragment {
     }
 
     private void setSessionSpin(){
+        sessionBriefs.add(0,new SessionBrief());
         ArrayAdapter<SessionBrief> session_adapter=new ArrayAdapter<>(
                 getContext(),
                 android.R.layout.simple_spinner_item,
@@ -281,7 +285,6 @@ public class SearchSessionHistoryFragment extends Fragment {
     }
 
     private void setHistoryList(List<History> historyList){
-
         HistoryAdapter adapter=new HistoryAdapter(historyList,requireContext());
         binding.recordList.setAdapter(adapter);
     }

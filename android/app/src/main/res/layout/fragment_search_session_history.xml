@@ -2,122 +2,157 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
        tools:context=".SearchSessionHistoryFragment" >
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="40dp"
-            android:text="Sessions:"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="40dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/student_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center_vertical"
+                android:text="Sessions:"
+                android:textColor="@color/title_color"
+                android:textSize="20dp" />
+
+            <Spinner
+                android:id="@+id/session_spin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="23dp"
-            android:text="Students:"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/from"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="19dp"
-        android:text="From"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/student_spin" />
+            <TextView
+                android:id="@+id/student_id"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center_vertical"
+                android:text="Students:"
+                android:textColor="@color/title_color"
+                android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/to"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="50dp"
-        android:text="To"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/from"
-        app:layout_constraintTop_toBottomOf="@+id/student_spin" />
+            <Spinner
+                android:id="@+id/student_spin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6" />
 
-    <Button
-        android:id="@+id/search_btn"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="220dp"
-        android:text="Search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/from" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/back_to_admin_btn"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="212dp"
-        android:layout_marginTop="8dp"
-        android:text="Back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/from" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/session_spin"
-        android:layout_width="214dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/from"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_transparent"
+                android:fontFamily="@font/opensans_bold"
+                android:text="From"
+                android:textColor="@color/title_color"
+                app:backgroundTint="#cccccc" />
 
-        <Spinner
-            android:id="@+id/student_spin"
-            android:layout_width="214dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="17dp"
-            app:layout_constraintStart_toEndOf="@+id/student_id"
-            app:layout_constraintTop_toBottomOf="@+id/session_spin" />
+            <Button
+                android:id="@+id/to"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_transparent"
+                android:fontFamily="@font/opensans_bold"
+                android:text="To"
+                android:textColor="@color/title_color"
+                app:backgroundTint="#cccccc" />
+        </LinearLayout>
 
-        <ListView
-            android:id="@+id/record_list"
-            android:layout_width="345dp"
-            android:layout_height="379dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_title" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/search_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Search"
+                app:backgroundTint="@color/saturate_confirm" />
+
+            <Button
+                android:id="@+id/back_to_admin_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="Back"
+                app:backgroundTint="@color/saturate_reject" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/list_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:fontFamily="@font/opensans_bold"
+            android:gravity="center"
             android:text="Attendance Record"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_btn" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textSize="20dp" />
+
+        <ListView
+            android:id="@+id/record_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="5"
+            android:background="@drawable/bg_btn_round"
+            android:paddingStart="5dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="10dp" />
+    </LinearLayout>
 </layout>

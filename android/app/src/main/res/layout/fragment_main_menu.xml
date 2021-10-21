@@ -2,49 +2,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-<Button
-    android:id="@+id/register_btn"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="159dp"
-    android:layout_marginLeft="159dp"
-    android:layout_marginTop="132dp"
-    android:layout_marginEnd="159dp"
-    android:layout_marginRight="159dp"
-    android:text="@string/register_btn"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/scanin" />
 
-<Button
-    android:id="@+id/check_in_btn"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="159dp"
-    android:layout_marginLeft="159dp"
-    android:layout_marginTop="33dp"
-    android:layout_marginEnd="159dp"
-    android:layout_marginRight="159dp"
-    android:text="@string/check_in_btn"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/admin_btn"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="159dp"
-        android:text="@string/admin_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_in_btn" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/register_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="@string/register_btn"
+                app:backgroundTint="@color/saturate_confirm" />
+
+            <Button
+                android:id="@+id/check_in_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="@string/check_in_btn"
+                app:backgroundTint="@color/saturate_confirm" />
+
+            <Button
+                android:id="@+id/admin_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="@string/admin_btn"
+                app:backgroundTint="@color/saturate_confirm" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </layout>

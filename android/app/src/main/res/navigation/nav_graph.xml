@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_navigation_admin_menu_to_navigation_search_record"
             app:destination="@id/navigation_search_record" />
+        <action
+            android:id="@+id/action_navigation_admin_menu_to_navigation_main_menu"
+            app:destination="@id/navigation_main_menu" />
     </fragment>
     <fragment
         android:id="@+id/navigation_search_record"

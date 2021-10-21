@@ -6,185 +6,252 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/session_repeat_num"
-        android:layout_width="193dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bottom_border_textview"
-        android:textSize="16dp"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/session_venue_txt" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="18dp"
-        android:text="Repeat Times:"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/session_venue_txt" />
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="21dp"
-        android:text="Period:"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="10dp"
-        android:text="Attendance list:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="per"
-        android:textSize="16dp"
-        app:layout_constraintStart_toEndOf="@+id/session_num_spin"
-        app:layout_constraintTop_toBottomOf="@+id/session_repeat_num" />
-
-    <TextView
-        android:id="@+id/textView9"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_marginTop="30dp"
-        android:text="Session name:"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
-        android:text="Venue:"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/session_start" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/session_name_txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/bottom_border_textview"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/session_venue_txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/bottom_border_textview"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-    <Spinner
-        android:id="@+id/session_num_spin"
-        android:layout_width="107dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="21dp"
-        android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-    <Spinner
-        android:id="@+id/session_freq_spin"
-        android:layout_width="108dp"
-        android:layout_height="23dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="21dp"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/session_repeat_num" />
-
-    <ListView
-        android:id="@+id/attendance_list"
-        android:layout_width="358dp"
-        android:layout_height="217dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        android:layout_marginBottom="20dp">
 
-    <Button
-        android:id="@+id/add_session_confirm_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="10dp"
-        android:text="Confirm"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/attendance_list" />
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.06"
+            android:fontFamily="@font/opensans_bold"
+            android:gravity="center_vertical"
+            android:text="Session name:"
+            android:textColor="@color/title_color"
+            android:textSize="16dp" />
 
-    <Button
-        android:id="@+id/add_session_cancel_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="80dp"
-        android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/add_session_confirm_btn"
-        app:layout_constraintTop_toBottomOf="@+id/attendance_list" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/session_name_txt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07"
+            android:background="@drawable/bottom_border_textview"
+            android:fontFamily="@font/opensans_regular"
+            android:textSize="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-    <Button
-        android:id="@+id/session_start"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
-        android:text="from"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/session_name_txt" />
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.06"
+            android:fontFamily="@font/opensans_bold"
+            android:gravity="center_vertical"
+            android:text="Venue:"
+            android:textColor="@color/title_color"
+            android:textSize="16dp" />
 
-    <Button
-        android:id="@+id/session_end"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="12dp"
-        android:text="to"
-        app:layout_constraintStart_toEndOf="@+id/session_start"
-        app:layout_constraintTop_toBottomOf="@+id/session_name_txt" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/session_venue_txt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07"
+            android:background="@drawable/bottom_border_textview"
+            android:fontFamily="@font/opensans_regular"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/session_start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="0.3"
+                android:background="@drawable/bottom_border_textview"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:fontFamily="@font/nunito_bold"
+                android:text="start date"
+                android:textColor="@color/title_color"
+                android:textSize="12sp"
+                app:backgroundTint="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/session_name_txt" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/start_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_round"
+                android:drawableLeft="@drawable/ic_clock"
+                android:fontFamily="@font/nunito_bold"
+                android:text="from"
+                android:textColor="@color/title_color"
+                app:backgroundTint="@color/white" />
+
+            <Button
+                android:id="@+id/end_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_round"
+                android:drawableLeft="@drawable/ic_clock"
+                android:fontFamily="@font/nunito_bold"
+                android:text="to"
+                android:textColor="@color/title_color"
+                app:backgroundTint="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.08"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center_vertical"
+                android:text="Repeat Times:"
+                android:textColor="@color/title_color"
+                android:textSize="16dp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/session_repeat_num"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="0.6"
+                android:background="@drawable/bottom_border_textview"
+                android:fontFamily="@font/opensans_regular"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.08"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center_vertical"
+                android:text="Period:"
+                android:textColor="@color/title_color"
+                android:textSize="16dp" />
+
+            <Spinner
+                android:id="@+id/session_num_spin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.08"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center_vertical"
+                android:text="per"
+                android:textColor="@color/title_color"
+                android:textSize="16dp" />
+
+            <Spinner
+                android:id="@+id/session_freq_spin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.07"
+            android:fontFamily="@font/opensans_bold"
+            android:gravity="center_vertical"
+            android:text="Attendance list:"
+            android:textColor="@color/title_color"
+            android:textSize="20dp" />
+
+        <ListView
+            android:id="@+id/attendance_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="0.4"
+            android:background="@drawable/bg_btn_transparent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.08"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/add_session_confirm_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Confirm"
+                app:backgroundTint="@color/saturate_confirm" />
+
+            <Button
+                android:id="@+id/add_session_cancel_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Cancel"
+                app:backgroundTint="@color/saturate_reject" />
+        </LinearLayout>
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

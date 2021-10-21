@@ -20,8 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.08"
+            android:fontFamily="@font/nunito_bold"
             android:gravity="center_vertical"
             android:text="Recognised:"
+            android:textColor="@color/title_color"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -38,7 +40,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
+                android:fontFamily="@font/opensans_bold"
                 android:text="PID:"
+                android:textColor="@color/title_color"
                 android:textSize="20sp" />
 
             <TextView
@@ -46,6 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
+                android:fontFamily="@font/opensans_regular"
                 android:text="12345"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -63,7 +68,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
+                android:fontFamily="@font/opensans_bold"
                 android:text="Name:"
+                android:textColor="@color/title_color"
                 android:textSize="20sp" />
 
             <TextView
@@ -71,6 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
+                android:fontFamily="@font/opensans_regular"
                 android:text="wang qiaochu"
                 android:textSize="20sp" />
 
@@ -82,8 +90,10 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.08"
+            android:fontFamily="@font/opensans_bold"
             android:gravity="center_vertical"
             android:text="Choose a section:"
+            android:textColor="@color/title_color"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -91,7 +101,8 @@
             android:id="@+id/session_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6" />
+            android:layout_weight="0.6"
+            android:background="@drawable/bg_btn_transparent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,7 +118,10 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:text="checkin" />
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="checkin"
+                app:backgroundTint="@color/saturate_confirm" />
 
             <Button
                 android:id="@+id/retake"
@@ -116,7 +130,10 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:text="retake" />
+                android:background="@drawable/bg_btn_round"
+                android:fontFamily="@font/opensans_bold"
+                android:text="retake"
+                app:backgroundTint="@color/saturate_reject" />
         </LinearLayout>
     </LinearLayout>
 

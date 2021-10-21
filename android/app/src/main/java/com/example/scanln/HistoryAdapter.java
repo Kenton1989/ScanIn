@@ -45,7 +45,7 @@ public class HistoryAdapter extends BaseAdapter{
         TextView time=view.findViewById(R.id.time);
 
         History record=(History) getItem(position);
-        sid.setText(String.valueOf(record.getSid()));
+        sid.setText(record.getSessionName());
         pid.setText(record.getPid());
         time.setText(record.getTime());
         return view;

@@ -16,6 +16,7 @@ public class UserInfo {
         this.name=json.getString("name");
         this.pid=json.getString("pid");
     }
+    public UserInfo(){}
     public String getPid() {
         return pid;
     }
@@ -33,6 +34,7 @@ public class UserInfo {
     }
     @Override
     public String toString(){
-        return String.format("%10s %10s",name,pid);
+        if(name==null) return "-";
+        return String.format("%s - %s",pid,name);
     }
 }

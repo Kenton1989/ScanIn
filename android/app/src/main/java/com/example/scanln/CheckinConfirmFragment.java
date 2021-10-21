@@ -1,12 +1,16 @@
 package com.example.scanln;
 
 import android.app.AlertDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -73,6 +77,7 @@ public class CheckinConfirmFragment extends Fragment {
         sessions=model.getRecords();
         CheckinSessionListAdapter adapter=new CheckinSessionListAdapter(sessions,requireContext());
         binding.sessionList.setAdapter(adapter);
+        binding.sessionList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         binding.sessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
