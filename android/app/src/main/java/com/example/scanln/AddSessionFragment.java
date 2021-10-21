@@ -63,12 +63,6 @@ public class AddSessionFragment extends Fragment {
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         model= new ViewModelProvider(requireActivity()).get(AdminViewModel.class);
         getAttendees();
-        ArrayAdapter<CharSequence> adapter=ArrayAdapter
-                .createFromResource(getContext(),
-                        R.array.repeat_num_array,
-                        android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.sessionNumSpin.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> freq_adapter=ArrayAdapter
                 .createFromResource(getContext(),
@@ -76,6 +70,7 @@ public class AddSessionFragment extends Fragment {
                         android.R.layout.simple_spinner_item);
         freq_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.sessionFreqSpin.setAdapter(freq_adapter);
+        binding.sessionFreqSpin.setSelection(0);
 
         binding.addSessionConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +239,7 @@ public class AddSessionFragment extends Fragment {
         ZonedDateTime iso_end=ZonedDateTime.of(end,ZoneId.systemDefault());
         String end_time=iso_end.format(dtf);
         int repeat=Integer.parseInt(binding.sessionRepeatNum.getText().toString());
-        int period=binding.sessionNumSpin.getSelectedItemPosition()+1;
+        int period=Integer.parseInt(binding.periodLengthNum.getText().toString());
         String period_unit=binding.sessionFreqSpin.getSelectedItem().toString();
         List<String> attendees=new ArrayList<>();
         SparseBooleanArray checked=binding.attendanceList.getCheckedItemPositions();

@@ -179,7 +179,7 @@ public class SearchSessionHistoryFragment extends Fragment {
             params.put("end_time",null);
         }
         else{
-            LocalDateTime dt=LocalDateTime.of(end_year,end_month,end_day,0,0);
+            LocalDateTime dt=LocalDateTime.of(end_year,end_month,end_day,23,59, 59, 999999000);
             String end_time= ZonedDateTime.of(dt, ZoneId.systemDefault()).format(dtf);
             params.put("end_time",end_time);
         }

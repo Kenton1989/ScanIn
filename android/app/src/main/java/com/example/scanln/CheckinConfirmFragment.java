@@ -117,7 +117,7 @@ public class CheckinConfirmFragment extends Fragment {
                     .setCancelable(false)
                     .setPositiveButton("OK", (dialog, which) -> {
                         NavDirections action=CheckinConfirmFragmentDirections
-                                .actionNavigationCheckinConfirmToNavigationCheckin();
+                                .actionNavigationCheckinConfirmToNavigationMainMenu();
                         Navigation.findNavController(requireView()).navigate(action);
                     });
             builder.show();

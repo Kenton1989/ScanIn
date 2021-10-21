@@ -130,10 +130,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.4"
+                android:layout_weight="1"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center_vertical"
-                android:text="Repeat Times:"
+                android:text="Repeat"
                 android:textColor="@color/title_color"
                 android:textSize="16dp" />
 
@@ -144,36 +144,24 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="0.6"
+                android:layout_weight="2"
                 android:background="@drawable/bottom_border_textview"
                 android:fontFamily="@font/opensans_regular"
+                android:inputType="number"
+                android:text="1"
                 android:textSize="16dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.08"
-            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textView18"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center_vertical"
-                android:text="Period:"
+                android:text="times"
                 android:textColor="@color/title_color"
                 android:textSize="16dp" />
-
-            <Spinner
-                android:id="@+id/session_num_spin"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3" />
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -186,18 +174,32 @@
                 android:id="@+id/textView14"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="1"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center_vertical"
-                android:text="per"
+                android:text="Every"
                 android:textColor="@color/title_color"
+                android:textSize="16dp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/period_length_num"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="2"
+                android:background="@drawable/bottom_border_textview"
+                android:fontFamily="@font/opensans_regular"
+                android:inputType="number"
+                android:text="1"
                 android:textSize="16dp" />
 
             <Spinner
                 android:id="@+id/session_freq_spin"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3" />
+                android:layout_weight="1" />
         </LinearLayout>
 
         <TextView

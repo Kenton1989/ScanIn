@@ -48,8 +48,8 @@ public class PermissionFragment extends Fragment {
         if(code==CAMERA_REQUEST_CODE){
             for (int i = 0; i < permissions.length; i++) {
                 if(results[i]==PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(requireContext(),
-                            "Permission request granted", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(requireContext(),
+//                            "Permission request granted", Toast.LENGTH_LONG).show();
                     toCamera();
                 }
                 else Toast.makeText(requireContext(),

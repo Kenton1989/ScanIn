@@ -68,18 +68,19 @@ public class CheckInFragment extends Fragment implements FaceDetectionCallback{
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
         setUpCamera();
-        binding.back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                cameraProvider.unbindAll();
-                cameraExecutor.shutdown();
-
-                NavDirections action=CheckInFragmentDirections.actionNavigationCheckinToNavigationMainMenu();
-                Navigation.findNavController(view).navigate(action);
-            }
-        });
-
+        binding.back.setOnClickListener(backToMain);
     }
+
+    private View.OnClickListener backToMain = new View.OnClickListener() {
+        @Override
+        public void onClick(View view){
+            cameraProvider.unbindAll();
+            cameraExecutor.shutdown();
+
+            NavDirections action=CheckInFragmentDirections.actionNavigationCheckinToNavigationMainMenu();
+            Navigation.findNavController(view).navigate(action);
+        }
+    };
 
     @SuppressLint("UnsafeOptInUsageError")
     private void setUpCamera(){
