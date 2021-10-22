@@ -2,6 +2,7 @@ package com.example.scanln;
 
 import android.app.AlertDialog;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -83,6 +85,10 @@ public class CheckinConfirmFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selected=(SessionBrief)adapter.getItem(position);
                 binding.action.setActivated(true);
+                for(int i=0;i<parent.getCount();i++){
+                    parent.getChildAt(i).setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_btn_round));
+                }
+                view.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_round_selected));
             }
         });
     }

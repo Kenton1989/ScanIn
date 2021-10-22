@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -73,10 +75,12 @@ public class TakePictureFragment extends Fragment implements FaceDetectionCallba
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState){
         model=new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
         binding.hint.setText("Click the camera icon when you are ready.");
+        binding.overlay.setVisibility(View.INVISIBLE);
         setUpCamera();
         binding.takePictureBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                startAnimation();
                 capture();
             }
         });
@@ -151,10 +155,6 @@ public class TakePictureFragment extends Fragment implements FaceDetectionCallba
                         super.onError(exception);
                     }
                 });
-        if(cur!=null){
-            binding.nextBtn.setEnabled(true);
-            binding.hint.setText("Picture taken successfully, click next to continue.");
-        }
 
     }
 
@@ -166,6 +166,13 @@ public class TakePictureFragment extends Fragment implements FaceDetectionCallba
         model.setFront(face);
         model.setString_front(ImageUtils.getJPEGString(face));
         Log.d("check picture", String.valueOf(face==null));
+        requireActivity().runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
+                binding.nextBtn.setEnabled(true);
+                binding.hint.setText("Picture taken successfully, click next to continue.");
+            }
+        });
         return true;
 
     }
@@ -173,5 +180,49 @@ public class TakePictureFragment extends Fragment implements FaceDetectionCallba
     @Override
     public void onSccess(Bitmap bitmap) {
 
+    }
+
+    private void startAnimation() {
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        fadeOut.setDuration(100);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                binding.overlay.setAlpha(0.0f);
+                binding.overlay.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+        });
+
+        AlphaAnimation fadeIn=new AlphaAnimation(0.0f,1.0f);
+        fadeIn.setDuration(100);
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                binding.overlay.setAlpha(1.0f);
+                binding.overlay.startAnimation(fadeOut);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                binding.overlay.setVisibility(View.VISIBLE);
+            }
+        });
+        binding.overlay.startAnimation(fadeIn);
     }
 }
