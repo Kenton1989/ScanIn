@@ -7,7 +7,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
