@@ -3,7 +3,6 @@ from datetime import datetime, timezone
 import base64
 from PIL import Image
 import io
-
 import logging
 
 log = logging.getLogger('my_app')
