@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-
 import com.example.scanln.databinding.FragmentAdminBinding;
-
 import org.jetbrains.annotations.NotNull;
 
 public class AdminFragment extends Fragment {
