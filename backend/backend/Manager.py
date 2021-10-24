@@ -3,7 +3,6 @@ from DatabaseAccessor import DatabaseAccessor
 from datetime import datetime, timedelta, timezone
 from PIL import Image
 import hashlib
-
 from face_recognizer import FaceRecognizer, FaceRecognizerError
 
 
