@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
-
 from urllib.request import Request, urlopen
 import json
 import base64
 
+
+#server address
 URL = 'http://104.248.151.223:3002/cz3002/'
 
 ADMIN_AUTH = {
