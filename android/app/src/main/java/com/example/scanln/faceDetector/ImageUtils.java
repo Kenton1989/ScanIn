@@ -13,10 +13,8 @@ import android.renderscript.ScriptIntrinsicYuvToRGB;
 import android.renderscript.Type;
 import android.util.Base64;
 import android.util.Log;
-
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
