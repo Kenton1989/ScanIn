@@ -1,2 +1,2 @@
 # ScanIn
-A face recognition based check in/out app
+A face recognition based attendence taking software
