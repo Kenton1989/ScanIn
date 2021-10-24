@@ -4,9 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.util.Log;
-
 import androidx.camera.core.ImageProxy;
-
 import com.example.scanln.FaceDetectionCallback;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
@@ -14,7 +12,6 @@ import com.google.mlkit.vision.face.Face;
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
