@@ -1,4 +1,4 @@
-package com.example.scanln;
+package com.example.scanln.model;
 
 import java.time.LocalDateTime;
 

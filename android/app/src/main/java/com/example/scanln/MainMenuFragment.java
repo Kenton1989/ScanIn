@@ -14,6 +14,8 @@ import com.example.scanln.databinding.FragmentMainMenuBinding;
 import org.jetbrains.annotations.NotNull;
 
 public class MainMenuFragment extends Fragment {
+    private final String CHECKIN="checkin";
+    private final String TAKEPICTURE="take_picture";
     private FragmentMainMenuBinding binding;
     public MainMenuFragment(){
         super(R.layout.fragment_main_menu);
@@ -45,8 +47,18 @@ public class MainMenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavDirections action=MainMenuFragmentDirections
-                        .actionNavigationMainMenuToNavigationRegister();
+                        .actionNavigationMainMenuToPermissionFragment(TAKEPICTURE);
                 Navigation.findNavController(view).navigate(action);
+            }
+        });
+
+        binding.checkInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavDirections action=MainMenuFragmentDirections
+                        .actionNavigationMainMenuToPermissionFragment(CHECKIN);
+                Navigation.findNavController(view).navigate(action);
+
             }
         });
     }

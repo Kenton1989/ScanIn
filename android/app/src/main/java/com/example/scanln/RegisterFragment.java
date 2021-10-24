@@ -2,6 +2,7 @@ package com.example.scanln;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -19,11 +21,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class RegisterFragment extends Fragment {
 
+    private RegisterViewModel model;
+    private String name;
+    private String id;
+    private String pwd;
+
     private FragmentRegisterBinding binding;
     public RegisterFragment(){
         super(R.layout.fragment_register);
-        //binding=FragmentRegisterBinding.inflate(getLayoutInflater());
-
     }
 
     @Override
@@ -37,6 +42,24 @@ public class RegisterFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model=new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+
+        name=model.getName();
+        if(name!=null && name!=""){
+            binding.inputName.getEditText().setText(name);
+        }
+
+        pwd=model.getPassword();
+        if(pwd!=null && pwd!=""){
+            binding.inputPw.getEditText().setText(pwd);
+        }
+
+        id=model.getId();
+        if(id!=null && id!=""){
+            binding.inputId.getEditText().setText(id);
+        }
+
         binding.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
              public void onClick(View view){
@@ -50,10 +73,14 @@ public class RegisterFragment extends Fragment {
             public void onClick(View view){
                 boolean valid=validateInput();
                 if(valid){
-                    NavDirections action =RegisterFragmentDirections.actionNavigationRegisterToNavigationTakePicture();
+                    model.setId(binding.inputId.getEditText().getText().toString());
+                    model.setName(binding.inputName.getEditText().getText().toString());
+                    model.setPassword(binding.inputPw.getEditText().getText().toString());
+
+                    NavDirections action=RegisterFragmentDirections.
+                            actionNavigationRegisterToNavigationTakePicture();
                     Navigation.findNavController(view).navigate(action);
                 }
-
             }
         });
 
