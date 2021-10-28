@@ -11,12 +11,14 @@ ADMIN_AUTH = {
     'hashed_password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
 }
 
-def limit_str(obj, limit = 500):
+
+def limit_str(obj, limit=500):
     s = str(obj)
     if len(s) <= limit:
         return s
     else:
         return s[:limit] + ' ...'
+
 
 def send(opName, params={}, auth=None):
     header = {
@@ -89,6 +91,7 @@ def test_get_history(pid=None, sid=None, beg=None, end=None, max_num=10):
         auth=ADMIN_AUTH
     ))
 
+
 def test_add_session(name, venue, beg: datetime, end: datetime, rep, period, unit, attendees):
     param = {
         'session_name': name,
@@ -156,10 +159,8 @@ if __name__ == '__main__':
     #     unit='day',
     #     attendees=['U1922499K'])
     send(
-        opName='recognize_face',
+        opName='get_valid_history_params',
         params={
-            'face': img_to_base64('C:\\Users\\kento\\Pictures\\wkt2.jpg'),
-            'want_session': True
         },
         auth=None
     )
